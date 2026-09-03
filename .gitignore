@@ -3,6 +3,7 @@
 # Course PDFs, A1 proposal, drafts, storyboard, interview data, caches: all stay local.
 /*
 !/.gitignore
+!/.github/
 !/friendzone-app/
 
 # ── Inside friendzone-app (belt and braces; it has its own .gitignore too)
