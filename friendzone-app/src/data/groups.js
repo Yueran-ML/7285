@@ -241,8 +241,12 @@ export const GROUPS = [
 
 export const GROUP_MAP = Object.fromEntries(GROUPS.map((g) => [g.id, g]))
 
-export function matchScore(group, interests) {
-  if (!interests.length) return 0
+// How well a circle fits the user's interests.
+//   hits  — number of the circle's tags the user also picked
+//   full  — every tag of the circle is one of the user's interests
+//   great — strong overlap: shares 2+ interests, or the circle is entirely "their thing"
+export function matchInfo(group, interests) {
   const hits = group.tags.filter((t) => interests.includes(t)).length
-  return Math.round((hits / group.tags.length) * 100)
+  const full = hits > 0 && hits === group.tags.length
+  return { hits, full, great: hits >= 2 || full, score: hits * 10 + (full ? 5 : 0) }
 }

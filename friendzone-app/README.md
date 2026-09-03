@@ -25,7 +25,10 @@ npm run preview    # serve dist/ locally
 ## Demo script (5-minute pitch)
 
 1. **Welcome** — type a name. Note the tone: "You don't have to walk up to anyone."
-2. **Interests** — pick 2–3 chips. Circles are ranked by how many of the circle's tags you share.
+2. **Interests** — pick 2–3 chips. Only circles that share at least one interest are recommended,
+   ranked by how many they share. GREAT MATCH = shares 2+ or the circle is entirely your interests.
+   Everything else sits under "Browse other circles"; picking an interest no circle covers (e.g. Yoga)
+   shows an empty state and the full list.
 3. **Discover** — join two circles. The second join unlocks the *Circle Member* badge.
 4. **Chat** — open Cooking Circle. Tap **Use this** on the prompt card, then **Send**.
    The +1 coin floats up ("Showed up today"), the header pill flips to ✓, a member replies,
