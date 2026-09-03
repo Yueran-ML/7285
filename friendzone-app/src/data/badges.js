@@ -1,0 +1,55 @@
+// Badges are cosmetic, cumulative and non-competitive by design (see A1 ethics table).
+
+export const BADGES = [
+  {
+    id: 'first-hello',
+    name: 'First Hello',
+    emoji: '👋',
+    line: 'You said something. That’s the hardest part.',
+    test: (s) => s.points >= 1,
+    points: 1,
+    hint: 'Send your first message',
+  },
+  {
+    id: 'circle',
+    name: 'Circle Member',
+    emoji: '🫶',
+    line: 'Two groups, twice the chances.',
+    test: (s) => s.joinedGroups.length >= 2,
+    hint: 'Join two groups',
+  },
+  {
+    id: 'regular',
+    name: 'Regular',
+    emoji: '🪑',
+    line: 'Showing up, again and again.',
+    test: (s) => s.points >= 5,
+    points: 5,
+    hint: 'Reach 5 points',
+  },
+  {
+    id: 'kitchen-table',
+    name: 'Kitchen Table',
+    emoji: '🍽️',
+    line: 'You met them in person.',
+    test: (s) => Object.values(s.meetups).some((m) => m.attendedDay != null),
+    hint: 'Attend a meetup',
+  },
+  {
+    id: 'keeper',
+    name: 'Keeper',
+    emoji: '🧵',
+    line: 'Kept the thread going after you met.',
+    test: (s) => s.pointLog.some((p) => p.reason === 'bonus'),
+    hint: 'Chat after a meetup',
+  },
+  {
+    id: 'fortnight',
+    name: 'Fortnight',
+    emoji: '🌱',
+    line: 'Two weeks of small, steady steps.',
+    test: (s) => s.points >= 14,
+    points: 14,
+    hint: 'Reach 14 points',
+  },
+]

@@ -1,0 +1,19 @@
+# ── Whitelist: only the prototype is tracked ─────────────────
+# Everything at the repo root is ignored except this file and friendzone-app/.
+# Course PDFs, A1 proposal, drafts, storyboard, interview data, caches: all stay local.
+/*
+!/.gitignore
+!/friendzone-app/
+
+# ── Inside friendzone-app (belt and braces; it has its own .gitignore too)
+node_modules/
+dist/
+*.local
+*.log
+
+# ── OS / editor ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
