@@ -3,6 +3,7 @@
 # Course PDFs, A1 proposal, drafts, storyboard, interview data, caches: all stay local.
 /*
 !/.gitignore
+!/README.md
 !/.github/
 !/friendzone-app/
 
