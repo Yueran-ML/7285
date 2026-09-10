@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { GROUP_MAP } from '../data/groups.js'
 import { BADGES } from '../data/badges.js'
+import { emptyProfile } from '../data/profile.js'
 
 const KEY = 'friendzone-state-v1'
 
@@ -14,6 +15,8 @@ export const initialState = {
   onboarded: false,
   name: '',
   interests: [],
+  // Optional. Everything here is user-declared and may stay blank.
+  profile: emptyProfile,
   day: 1,
   joinedGroups: [],
   messages: {}, // groupId -> [{ id, from, text, day, mine }]
@@ -69,6 +72,34 @@ function reducer(state, action) {
 
     case 'COMPLETE_ONBOARDING':
       return { ...state, onboarded: true }
+
+    case 'SET_PROFILE_FIELD':
+      // Tapping the selected option again clears it, so a choice is never final.
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          [action.field]: state.profile[action.field] === action.value ? null : action.value,
+        },
+      }
+
+    case 'SET_BIO':
+      return { ...state, profile: { ...state.profile, bio: action.text } }
+
+    case 'TOGGLE_PROFILE_TAG': {
+      const list = state.profile[action.field] || []
+      const has = list.includes(action.id)
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          [action.field]: has ? list.filter((t) => t !== action.id) : [...list, action.id],
+        },
+      }
+    }
+
+    case 'CLEAR_PROFILE':
+      return { ...state, profile: emptyProfile }
 
     case 'JOIN_GROUP': {
       if (state.joinedGroups.includes(action.groupId)) return state
@@ -140,7 +171,14 @@ function load() {
     const raw = localStorage.getItem(KEY)
     if (!raw) return initialState
     const parsed = JSON.parse(raw)
-    return { ...initialState, ...parsed, lastEarned: null, pendingBadges: [] }
+    return {
+      ...initialState,
+      ...parsed,
+      // Saves from iteration 1 have no profile; merge so a partial one is safe too.
+      profile: { ...emptyProfile, ...(parsed.profile || {}) },
+      lastEarned: null,
+      pendingBadges: [],
+    }
   } catch {
     return initialState
   }

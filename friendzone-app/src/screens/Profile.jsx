@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
-import { Flame, Lock, RotateCcw, SkipForward } from 'lucide-react'
+import { Flame, Lock, Pencil, RotateCcw, SkipForward } from 'lucide-react'
 import { BADGES } from '../data/badges.js'
 import { GROUP_MAP } from '../data/groups.js'
+import { DISLIKE_MAP, LIKE_MAP, SOCIAL_STYLE_MAP, ZODIAC_MAP } from '../data/profile.js'
 import Avatar from '../components/Avatar.jsx'
 import { useStore, streakDays, dayLabel } from '../store/useStore.jsx'
 
@@ -35,9 +36,13 @@ function Ring({ value, max, size = 132, stroke = 11 }) {
   )
 }
 
-export default function Profile({ narrow }) {
+export default function Profile({ narrow, onEditProfile }) {
   const { state, dispatch } = useStore()
   const streak = streakDays(state)
+  const p = state.profile
+  const style = p.socialStyle ? SOCIAL_STYLE_MAP[p.socialStyle] : null
+  const sign = p.zodiac ? ZODIAC_MAP[p.zodiac] : null
+  const hasProfile = Boolean(style || sign) || p.likes.length > 0 || p.dislikes.length > 0 || Boolean(p.bio.trim())
   const nextBadge = BADGES.find((b) => b.points != null && !state.unlockedBadges.includes(b.id))
   const nextTarget = nextBadge ? nextBadge.points : null
   const ringMax = nextTarget || Math.max(state.points, 1)
@@ -112,8 +117,107 @@ export default function Profile({ narrow }) {
         </div>
       </motion.section>
 
+      {/* about you */}
+      <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14, duration: 0.5 }} style={{ marginTop: 26 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="eyebrow" style={{ flex: 1 }}>
+            About you
+          </div>
+          <button
+            onClick={onEditProfile}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: 'var(--terracotta)' }}
+          >
+            <Pencil size={12} /> {hasProfile ? 'Edit' : 'Add'}
+          </button>
+        </div>
+
+        {hasProfile ? (
+          <div className="card" style={{ marginTop: 12, padding: 16 }}>
+            {style && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                <span style={{ fontSize: 22, lineHeight: 1 }}>{style.emoji}</span>
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ display: 'block', fontWeight: 800, fontSize: 14 }}>{style.label}</span>
+                  <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)' }}>{style.line}</span>
+                </span>
+              </div>
+            )}
+
+            {p.bio.trim() && (
+              <p
+                style={{
+                  fontSize: 13.5,
+                  color: 'var(--ink-soft)',
+                  lineHeight: 1.5,
+                  marginTop: style ? 12 : 0,
+                  paddingTop: style ? 12 : 0,
+                  borderTop: style ? '1px solid var(--line)' : 'none',
+                }}
+              >
+                “{p.bio.trim()}”
+              </p>
+            )}
+
+            {(p.likes.length > 0 || p.dislikes.length > 0 || sign) && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 12 }}>
+                {p.likes.map((id) => (
+                  <span
+                    key={id}
+                    className="chip"
+                    style={{ background: 'var(--terracotta-soft)', color: 'var(--terracotta-deep)', fontSize: 11.5, padding: '4px 10px' }}
+                  >
+                    {LIKE_MAP[id]?.emoji} {LIKE_MAP[id]?.label}
+                  </span>
+                ))}
+                {p.dislikes.map((id) => (
+                  <span
+                    key={id}
+                    className="chip"
+                    style={{ background: 'var(--cream-deep)', color: 'var(--muted)', fontSize: 11.5, padding: '4px 10px' }}
+                  >
+                    {DISLIKE_MAP[id]?.emoji} not {DISLIKE_MAP[id]?.label.toLowerCase()}
+                  </span>
+                ))}
+                {sign && (
+                  <span
+                    key="sign"
+                    className="chip"
+                    style={{ background: 'var(--gold-soft)', color: 'var(--gold-deep)', fontSize: 11.5, padding: '4px 10px' }}
+                  >
+                    {sign.symbol} {sign.label}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <button
+            onClick={onEditProfile}
+            className="card"
+            style={{
+              display: 'block',
+              width: '100%',
+              textAlign: 'left',
+              marginTop: 12,
+              padding: 16,
+              borderStyle: 'dashed',
+              borderColor: 'var(--line-strong)',
+              background: 'transparent',
+              boxShadow: 'none',
+            }}
+          >
+            <span style={{ display: 'block', fontWeight: 800, fontSize: 13.5, color: 'var(--ink-soft)' }}>
+              Nothing here yet
+            </span>
+            <span style={{ display: 'block', fontSize: 12.5, color: 'var(--muted)', marginTop: 3, lineHeight: 1.45 }}>
+              Add how you like to meet people, what you enjoy, and what you would rather avoid. All optional.
+            </span>
+          </button>
+        )}
+      </motion.section>
+
       {/* week strip */}
-      <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.5 }} style={{ marginTop: 22 }}>
+      <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18, duration: 0.5 }} style={{ marginTop: 26 }}>
         <div className="eyebrow">This week</div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12 }}>
           {days.map((d, i) => {

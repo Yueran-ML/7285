@@ -36,11 +36,11 @@ Three mechanisms, designed to work together:
 
 | Mechanism | What it does | Why |
 |---|---|---|
-| **Interest-based circles** | Pick what you already like; get recommended small groups (4–8 people) that share it. | Replaces the cold approach with a curated, low-pressure entry point. |
+| **Interest-based circles** | Pick what you already like; get recommended small groups (4–8 people) that share it. An optional profile adds how you like to meet people, what you enjoy, what you would rather avoid, and your star sign. | Replaces the cold approach with a curated, low-pressure entry point. Shared hobbies alone say little about whether a room will feel comfortable. |
 | **Prompted chat with daily points** | Each circle chat has built-in conversation prompts. Saying anything once a day earns one point; points unlock cosmetic badges. | Prompts give people *something to focus on* instead of something to invent. Small, daily, non-competitive rewards scaffold the first steps for people who would otherwise stay silent. |
 | **Post-meetup bonus** | When a circle meets in person, chatting in the seven days afterwards earns triple points. | Directly targets the "after everyone goes home" drop-off our research identified. |
 
-The whole flow, as one user would experience it: *Lyn arrives in Brisbane → picks cooking, movies
+The whole flow, as one user would experience it: *Jia arrives in Brisbane → picks cooking, movies
 and study → joins the Cooking Circle → answers the prompt "What's a dish from your hometown you
 miss?" → chats daily → the circle cooks dumplings together on Saturday → the bonus window keeps
 the thread alive → they plan the next one.*
@@ -62,6 +62,10 @@ the thread alive → they plan the next one.*
 - Meetup suggestions are group-based (never one-to-one) in public or shared spaces.
 - No message content is analysed; participation is tracked as a yes/no per day.
 - Interest matching surfaces overlap but never filters by language or nationality.
+- Every profile field is chosen by the user, never inferred. The social-style question avoids
+  clinical language, and a blank profile is fully supported.
+- Something you said you would rather avoid lowers a circle's rank and is disclosed on the card.
+  It never hides the circle from you.
 - Interview audio and transcripts are kept out of this repository.
 
 ## Roadmap
@@ -69,8 +73,8 @@ the thread alive → they plan the next one.*
 | Iteration | Focus | Status |
 |---|---|---|
 | **1** — Week 8 exhibit (17 Sep 2026) | Interactive prototype: onboarding, discovery, prompted chat, points, meetup flow, badges. Simulated days, local state. | ✅ Live |
-| **2** | Language as a barrier: bilingual prompts, keyword hints for non-native speakers, mixed-language circle recommendations. | Planned |
-| **3** | Backend for shared circles across devices, real dates, evaluation-study integration. | Planned |
+| **2** | Matching past hobbies: an optional profile (how you like to meet people, things you enjoy, things you would rather avoid, star sign), four sort lenses, and cards that explain why each circle surfaced. Conversation prompts gained their own replies. | ✅ Live |
+| **3** | Language as a barrier: bilingual prompts and keyword hints for non-native speakers. Backend for shared circles across devices, real dates, evaluation-study integration. | Planned |
 
 ## Repository
 
@@ -98,4 +102,4 @@ participants are quoted with pseudonyms.
 - Fisher, B., & Tronto, J. C. (1990). Toward a feminist theory of caring. In *Circles of care* (pp. 35–62). SUNY Press.
 - Gray, C. M., et al. (2018). The dark (patterns) side of UX design. *CHI 2018*.
 - Sawir, E., et al. (2008). Loneliness and international students: An Australian study. *Journal of Studies in International Education, 12*(2), 148–180.
-- Stuart, J., et al. (2022). Factors affecting engagement and belonging in community groups. *British Journal of Health Psychology, 27*(4), 1304–1320.
+- Stuart, A., Stevenson, C., Koschate, M., Cohen, J., & Levine, M. (2022). 'Oh no, not a group!' The factors that lonely or isolated people report as barriers to joining groups for health and well-being. *British Journal of Health Psychology, 27*(1), 179–193.

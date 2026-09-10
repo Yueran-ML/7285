@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, CalendarCheck, Lightbulb, RefreshCw, Send, Sparkles, Users } from 'lucide-react'
 import { GROUP_MAP } from '../data/groups.js'
-import { promptsFor } from '../data/prompts.js'
+import { pickReply, promptsFor, replyPoolFor } from '../data/prompts.js'
 import Avatar from '../components/Avatar.jsx'
 import PointBurst from '../components/PointBurst.jsx'
 import { useStore, bonusActive, bonusDaysLeft, BONUS_AMOUNT } from '../store/useStore.jsx'
@@ -154,6 +154,11 @@ export default function Chat({ groupId, onBack }) {
   const listRef = useRef(null)
   const inputRef = useRef(null)
   const timers = useRef([])
+  // Which prompt seeded the composer, so the answer can respond to that question.
+  const usedPromptId = useRef(null)
+  // Short memory so the circle does not repeat itself or let one person answer twice.
+  const recentReplies = useRef([])
+  const lastSpeaker = useRef(null)
 
   const prompts = useMemo(() => promptsFor(group?.tags), [group])
   const prompt = prompts[promptIdx % prompts.length]
@@ -184,18 +189,30 @@ export default function Chat({ groupId, onBack }) {
     setPromptOpen(false)
 
     // Simulated reply from a circle member so the prototype feels alive.
-    const member = group.members[Math.floor(Math.random() * group.members.length)]
-    const reply = group.replies[Math.floor(Math.random() * group.replies.length)]
-    const t1 = setTimeout(() => setTyping(member), 700 + Math.random() * 500)
+    // The pool is chosen from the prompt that was answered, or from keywords in
+    // a free-typed message, so two different questions get two different answers.
+    const reply = pickReply(replyPoolFor(t, usedPromptId.current, group), recentReplies.current)
+    recentReplies.current = [...recentReplies.current, reply].slice(-6)
+    usedPromptId.current = null
+
+    const others = group.members.filter((m) => m.name !== lastSpeaker.current)
+    const bench = others.length ? others : group.members
+    const member = bench[Math.floor(Math.random() * bench.length)]
+    lastSpeaker.current = member.name
+
+    // Longer answers take longer to type.
+    const typeFor = Math.min(3200, 1100 + reply.length * 22)
+    const t1 = setTimeout(() => setTyping(member), 650 + Math.random() * 500)
     const t2 = setTimeout(() => {
       setTyping(null)
       dispatch({ type: 'RECEIVE_MESSAGE', groupId, from: member.name, text: reply })
-    }, 2000 + Math.random() * 1200)
+    }, typeFor + Math.random() * 700)
     timers.current.push(t1, t2)
   }
 
   const usePrompt = () => {
-    setText(prompt)
+    usedPromptId.current = prompt.id
+    setText(prompt.text)
     inputRef.current?.focus()
   }
 
@@ -344,7 +361,7 @@ export default function Chat({ groupId, onBack }) {
                   transition={{ duration: 0.2 }}
                   style={{ fontFamily: 'var(--font-display)', fontSize: 16.5, fontWeight: 500, lineHeight: 1.35 }}
                 >
-                  “{prompt}”
+                  “{prompt.text}”
                 </motion.p>
               </AnimatePresence>
               <div style={{ display: 'flex', gap: 8 }}>

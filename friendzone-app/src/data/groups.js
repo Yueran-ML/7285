@@ -1,4 +1,10 @@
 // Seed groups. Members are fictional. Avatar colours are picked from the palette.
+//
+// Iteration 2 adds three fields per circle so matching can look past interests:
+//   pace     — 'quiet' | 'mixed' | 'lively', compared against the user's social style
+//   traits   — what the circle is like, drawn from the LIKES vocabulary
+//   involves — honest heads-up tags, drawn from the DISLIKES vocabulary
+// Members carry a star sign so the profile's zodiac field has something to meet.
 
 const C = {
   terracotta: '#d96c4f',
@@ -17,14 +23,17 @@ export const GROUPS = [
     name: 'Cooking Circle',
     emoji: '🍳',
     tags: ['cooking', 'coffee'],
+    pace: 'mixed',
+    traits: ['foodie', 'homebody', 'deep-talks'],
+    involves: [],
     capacity: 6,
     blurb: 'Home-cooked food, shared kitchens, and recipes from wherever we came from.',
     place: 'Shared Kitchen · Level 3',
     members: [
-      { name: 'Priya', color: C.plum },
-      { name: 'Tom', color: C.sky },
-      { name: 'Mei', color: C.rose },
-      { name: 'Jonas', color: C.moss },
+      { name: 'Priya', color: C.plum, sign: 'virgo' },
+      { name: 'Tom', color: C.sky, sign: 'taurus' },
+      { name: 'Mei', color: C.rose, sign: 'cancer' },
+      { name: 'Jonas', color: C.moss, sign: 'leo' },
     ],
     meetup: { day: 'Saturday', time: '2:00 pm', place: 'Shared Kitchen L3', activity: 'Dumpling night' },
     seed: [
@@ -48,15 +57,18 @@ export const GROUPS = [
     name: 'Friday Film Club',
     emoji: '🎬',
     tags: ['movies'],
+    pace: 'quiet',
+    traits: ['homebody', 'night-owl'],
+    involves: ['late-nights'],
     capacity: 8,
     blurb: 'One film, one couch, every Friday. Popcorn negotiable.',
     place: 'Common Room · Ground',
     members: [
-      { name: 'Aiko', color: C.rose },
-      { name: 'Ben', color: C.sky },
-      { name: 'Farah', color: C.gold },
-      { name: 'Luca', color: C.moss },
-      { name: 'Sam', color: C.clay },
+      { name: 'Aiko', color: C.rose, sign: 'pisces' },
+      { name: 'Ben', color: C.sky, sign: 'aquarius' },
+      { name: 'Farah', color: C.gold, sign: 'libra' },
+      { name: 'Luca', color: C.moss, sign: 'scorpio' },
+      { name: 'Sam', color: C.clay, sign: 'gemini' },
     ],
     meetup: { day: 'Friday', time: '7:00 pm', place: 'Common Room', activity: 'Studio Ghibli night' },
     seed: [
@@ -78,13 +90,16 @@ export const GROUPS = [
     name: 'Library Buddies',
     emoji: '📚',
     tags: ['study', 'coffee'],
+    pace: 'quiet',
+    traits: ['early-riser', 'planner', 'quiet-cafes'],
+    involves: ['early-mornings'],
     capacity: 6,
     blurb: 'Quiet company for long study sessions. Coffee runs at the top of the hour.',
     place: 'Central Library · Level 2',
     members: [
-      { name: 'Hana', color: C.plum },
-      { name: 'Ravi', color: C.moss },
-      { name: 'Ella', color: C.gold },
+      { name: 'Hana', color: C.plum, sign: 'capricorn' },
+      { name: 'Ravi', color: C.moss, sign: 'virgo' },
+      { name: 'Ella', color: C.gold, sign: 'taurus' },
     ],
     meetup: { day: 'Wednesday', time: '10:00 am', place: 'Central Library L2', activity: 'Study block + coffee' },
     seed: [
@@ -105,16 +120,19 @@ export const GROUPS = [
     name: 'Board Game Night',
     emoji: '🎲',
     tags: ['boardgames', 'gaming'],
+    pace: 'lively',
+    traits: ['night-owl', 'spontaneous'],
+    involves: ['competitive', 'big-crowds', 'late-nights'],
     capacity: 8,
     blurb: 'Thursday nights on the rooftop. Beginners welcome, we explain everything.',
     place: 'Rooftop Lounge',
     members: [
-      { name: 'Diego', color: C.terracotta },
-      { name: 'Wen', color: C.sky },
-      { name: 'Olivia', color: C.rose },
-      { name: 'Kofi', color: C.moss },
-      { name: 'Ines', color: C.gold },
-      { name: 'Max', color: C.plum },
+      { name: 'Diego', color: C.terracotta, sign: 'aries' },
+      { name: 'Wen', color: C.sky, sign: 'gemini' },
+      { name: 'Olivia', color: C.rose, sign: 'leo' },
+      { name: 'Kofi', color: C.moss, sign: 'sagittarius' },
+      { name: 'Ines', color: C.gold, sign: 'libra' },
+      { name: 'Max', color: C.plum, sign: 'aries' },
     ],
     meetup: { day: 'Thursday', time: '7:00 pm', place: 'Rooftop Lounge', activity: 'Catan + card games' },
     seed: [
@@ -135,14 +153,17 @@ export const GROUPS = [
     name: 'Sunrise Runners',
     emoji: '🏃',
     tags: ['running', 'hiking'],
+    pace: 'mixed',
+    traits: ['early-riser', 'outdoors'],
+    involves: ['early-mornings'],
     capacity: 6,
     blurb: 'Easy pace along the river before the city wakes up. No one gets left behind.',
     place: 'River Walk · Kangaroo Point',
     members: [
-      { name: 'Nadia', color: C.sage },
-      { name: 'Chris', color: C.sky },
-      { name: 'Yuki', color: C.rose },
-      { name: 'Omar', color: C.clay },
+      { name: 'Nadia', color: C.sage, sign: 'capricorn' },
+      { name: 'Chris', color: C.sky, sign: 'scorpio' },
+      { name: 'Yuki', color: C.rose, sign: 'pisces' },
+      { name: 'Omar', color: C.clay, sign: 'aquarius' },
     ],
     meetup: { day: 'Sunday', time: '6:30 am', place: 'River Walk', activity: '5k easy run' },
     seed: [
@@ -163,13 +184,16 @@ export const GROUPS = [
     name: 'Mt Coot-tha Walkers',
     emoji: '🌿',
     tags: ['hiking', 'photography'],
+    pace: 'quiet',
+    traits: ['outdoors', 'early-riser', 'deep-talks'],
+    involves: ['early-mornings'],
     capacity: 6,
     blurb: 'Saturday trail walks with too many photo stops.',
     place: 'Bus stop B · Chancellors Place',
     members: [
-      { name: 'Grace', color: C.moss },
-      { name: 'Arjun', color: C.plum },
-      { name: 'Lena', color: C.gold },
+      { name: 'Grace', color: C.moss, sign: 'cancer' },
+      { name: 'Arjun', color: C.plum, sign: 'virgo' },
+      { name: 'Lena', color: C.gold, sign: 'taurus' },
     ],
     meetup: { day: 'Saturday', time: '8:00 am', place: 'Bus stop B', activity: 'Summit track walk' },
     seed: [
@@ -189,15 +213,18 @@ export const GROUPS = [
     name: 'Lo-fi Study Beats',
     emoji: '🎵',
     tags: ['study', 'music'],
+    pace: 'quiet',
+    traits: ['homebody', 'quiet-cafes', 'night-owl'],
+    involves: [],
     capacity: 6,
     blurb: 'Shared playlists, shared deadlines. Headphones on, doors open.',
     place: 'Study Lounge · Level 1',
     members: [
-      { name: 'Zara', color: C.rose },
-      { name: 'Finn', color: C.sky },
-      { name: 'Ayla', color: C.sage },
-      { name: 'Theo', color: C.clay },
-      { name: 'Noor', color: C.plum },
+      { name: 'Zara', color: C.rose, sign: 'libra' },
+      { name: 'Finn', color: C.sky, sign: 'sagittarius' },
+      { name: 'Ayla', color: C.sage, sign: 'cancer' },
+      { name: 'Theo', color: C.clay, sign: 'gemini' },
+      { name: 'Noor', color: C.plum, sign: 'pisces' },
     ],
     meetup: { day: 'Tuesday', time: '4:00 pm', place: 'Study Lounge L1', activity: 'Playlist swap + study' },
     seed: [
@@ -217,12 +244,15 @@ export const GROUPS = [
     name: 'Coffee Crawl',
     emoji: '☕',
     tags: ['coffee', 'photography'],
+    pace: 'lively',
+    traits: ['foodie', 'spontaneous', 'quiet-cafes'],
+    involves: ['big-crowds'],
     capacity: 6,
     blurb: 'One new café every Sunday. Rating system very unscientific.',
     place: 'West End',
     members: [
-      { name: 'Isla', color: C.gold },
-      { name: 'Mateo', color: C.terracotta },
+      { name: 'Isla', color: C.gold, sign: 'leo' },
+      { name: 'Mateo', color: C.terracotta, sign: 'aries' },
     ],
     meetup: { day: 'Sunday', time: '10:00 am', place: 'West End', activity: 'Café #4 of the crawl' },
     seed: [
@@ -241,12 +271,78 @@ export const GROUPS = [
 
 export const GROUP_MAP = Object.fromEntries(GROUPS.map((g) => [g.id, g]))
 
-// How well a circle fits the user's interests.
-//   hits  — number of the circle's tags the user also picked
-//   full  — every tag of the circle is one of the user's interests
-//   great — strong overlap: shares 2+ interests, or the circle is entirely "their thing"
-export function matchInfo(group, interests) {
-  const hits = group.tags.filter((t) => interests.includes(t)).length
-  const full = hits > 0 && hits === group.tags.length
-  return { hits, full, great: hits >= 2 || full, score: hits * 10 + (full ? 5 : 0) }
+export const SORT_MODES = [
+  { id: 'best', label: 'Best match' },
+  { id: 'interests', label: 'Interests' },
+  { id: 'style', label: 'How you meet' },
+  { id: 'sign', label: 'Star sign' },
+]
+
+// How well a circle fits the user, across every facet they chose to fill in.
+//
+// Returns the numbers plus a `reasons` list the card renders verbatim, so the
+// app can always answer "why am I seeing this?" — nothing is a black box.
+// A clash lowers the score but never removes a circle from the list.
+export function matchFacets(group, state = {}) {
+  const interests = state.interests || []
+  const { socialStyle = null, zodiac = null, likes = [], dislikes = [] } = state.profile || {}
+
+  const sharedInterests = group.tags.filter((t) => interests.includes(t))
+  const allInterests = sharedInterests.length > 0 && sharedInterests.length === group.tags.length
+
+  const paceExact = Boolean(socialStyle) && group.pace === socialStyle
+  const paceOk = Boolean(socialStyle) && !paceExact && (group.pace === 'mixed' || socialStyle === 'mixed')
+
+  const sharedTraits = group.traits.filter((t) => likes.includes(t))
+  const clashes = group.involves.filter((t) => dislikes.includes(t))
+  const signMates = zodiac ? group.members.filter((m) => m.sign === zodiac) : []
+
+  const score =
+    sharedInterests.length * 10 +
+    (allInterests ? 5 : 0) +
+    (paceExact ? 6 : paceOk ? 3 : 0) +
+    sharedTraits.length * 4 +
+    signMates.length * 2 -
+    clashes.length * 5
+
+  const great =
+    sharedInterests.length >= 2 ||
+    allInterests ||
+    (sharedInterests.length >= 1 && (paceExact || sharedTraits.length >= 2))
+
+  return {
+    hits: sharedInterests.length,
+    sharedInterests,
+    allInterests,
+    paceExact,
+    paceOk,
+    sharedTraits,
+    clashes,
+    signMates,
+    signMateCount: signMates.length,
+    score,
+    great,
+    // any positive signal at all — decides recommended vs "browse the rest"
+    matched: sharedInterests.length > 0 || paceExact || sharedTraits.length > 0 || signMates.length > 0,
+  }
+}
+
+// Sort comparator per mode. Fuller circles sink so newcomers land somewhere
+// with room, which also keeps the same few circles from always winning.
+export function comparatorFor(mode) {
+  const openness = (a, b) => a.members.length / a.capacity - b.members.length / b.capacity
+  switch (mode) {
+    case 'interests':
+      return (a, b) => b.hits - a.hits || b.score - a.score || openness(a, b)
+    case 'style':
+      return (a, b) =>
+        Number(b.paceExact) - Number(a.paceExact) ||
+        b.sharedTraits.length - a.sharedTraits.length ||
+        b.score - a.score ||
+        openness(a, b)
+    case 'sign':
+      return (a, b) => b.signMateCount - a.signMateCount || b.score - a.score || openness(a, b)
+    default:
+      return (a, b) => b.score - a.score || openness(a, b)
+  }
 }

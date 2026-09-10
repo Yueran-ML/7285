@@ -16,7 +16,7 @@ export default function Interests({ onBack, onNext }) {
 
       <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
         <div className="eyebrow" style={{ marginTop: 8 }}>
-          Step 1 of 1
+          Step 1 of 2
         </div>
         <h1 style={{ fontSize: 34, marginTop: 10, fontWeight: 500 }}>
           Hi {state.name}. What do you <em style={{ color: 'var(--terracotta)', fontStyle: 'italic' }}>already</em> like?

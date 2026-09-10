@@ -6,6 +6,7 @@ import TabBar from './components/TabBar.jsx'
 import BadgeUnlock from './components/BadgeUnlock.jsx'
 import Welcome from './screens/Welcome.jsx'
 import Interests from './screens/Interests.jsx'
+import About from './screens/About.jsx'
 import Discover from './screens/Discover.jsx'
 import Chats from './screens/Chats.jsx'
 import Chat from './screens/Chat.jsx'
@@ -39,6 +40,8 @@ function Shell() {
   const [rawScreen, setScreen] = useState(state.onboarded ? 'discover' : 'welcome')
   const [dir, setDir] = useState(1)
   const [activeGroup, setActiveGroup] = useState(null)
+  // Where the About editor was opened from, so Back and Done return there.
+  const [aboutFrom, setAboutFrom] = useState('interests')
 
   // A reset (onboarded → false) from any tab screen lands on Welcome. Derived, not effect-driven.
   const screen = state.onboarded || rawScreen === 'interests' ? rawScreen : 'welcome'
@@ -50,6 +53,10 @@ function Shell() {
   const openChat = (id) => {
     setActiveGroup(id)
     go('chat', 1)
+  }
+  const openAbout = (from) => {
+    setAboutFrom(from)
+    go('about', 1)
   }
 
   const tabScreen = ['discover', 'chats', 'profile'].includes(screen)
@@ -65,12 +72,25 @@ function Shell() {
         )}
         {screen === 'interests' && (
           <motion.div key="interests" custom={dir} variants={slide} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0 }}>
-            <Interests onBack={() => go(state.onboarded ? 'discover' : 'welcome', -1)} onNext={() => go('discover', 1)} />
+            <Interests onBack={() => go(state.onboarded ? 'discover' : 'welcome', -1)} onNext={() => openAbout('interests')} />
+          </motion.div>
+        )}
+        {screen === 'about' && (
+          <motion.div key="about" custom={dir} variants={slide} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0 }}>
+            <About
+              mode={aboutFrom === 'interests' ? 'onboarding' : 'edit'}
+              onBack={() => go(aboutFrom, -1)}
+              onDone={() => go(aboutFrom === 'interests' ? 'discover' : aboutFrom, 1)}
+            />
           </motion.div>
         )}
         {screen === 'discover' && (
           <motion.div key="discover" variants={fade} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0 }}>
-            <Discover onOpenChat={openChat} onEditInterests={() => go('interests', -1)} />
+            <Discover
+              onOpenChat={openChat}
+              onEditInterests={() => go('interests', -1)}
+              onEditProfile={() => openAbout('discover')}
+            />
           </motion.div>
         )}
         {screen === 'chats' && (
@@ -80,7 +100,7 @@ function Shell() {
         )}
         {screen === 'profile' && (
           <motion.div key="profile" variants={fade} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0 }}>
-            <Profile narrow={narrow} />
+            <Profile narrow={narrow} onEditProfile={() => openAbout('profile')} />
           </motion.div>
         )}
         {screen === 'chat' && activeGroup && (
