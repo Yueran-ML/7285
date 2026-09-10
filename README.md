@@ -39,6 +39,7 @@ Three mechanisms, designed to work together:
 | **Interest-based circles** | Pick what you already like; get recommended small groups (4–8 people) that share it. An optional profile adds how you like to meet people, what you enjoy, what you would rather avoid, and your star sign. | Replaces the cold approach with a curated, low-pressure entry point. Shared hobbies alone say little about whether a room will feel comfortable. |
 | **Prompted chat with daily points** | Each circle chat has built-in conversation prompts. Saying anything once a day earns one point; points unlock cosmetic badges. | Prompts give people *something to focus on* instead of something to invent. Small, daily, non-competitive rewards scaffold the first steps for people who would otherwise stay silent. |
 | **Post-meetup bonus** | When a circle meets in person, chatting in the seven days afterwards earns triple points. | Directly targets the "after everyone goes home" drop-off our research identified. |
+| **In-person mode** | At the meetup itself, one tap switches off everything except a deck of prompts written for a table. Nothing there earns points. | The hardest moment is the one the app cannot mediate. Its job there is to hand over an opening line and then get out of the way. |
 
 The whole flow, as one user would experience it: *Jia arrives in Brisbane → picks cooking, movies
 and study → joins the Cooking Circle → answers the prompt "What's a dish from your hometown you
@@ -73,7 +74,7 @@ the thread alive → they plan the next one.*
 | Iteration | Focus | Status |
 |---|---|---|
 | **1** — Week 8 exhibit (17 Sep 2026) | Interactive prototype: onboarding, discovery, prompted chat, points, meetup flow, badges. Simulated days, local state. | ✅ Live |
-| **2** | Matching past hobbies: an optional profile (how you like to meet people, things you enjoy, things you would rather avoid, star sign), four sort lenses, and cards that explain why each circle surfaced. Conversation prompts gained their own replies. | ✅ Live |
+| **2** | Matching past hobbies: an optional profile (how you like to meet people, things you enjoy, things you would rather avoid, star sign) and a three-level interest tree, so Motorsport, Formula 1 and Ferrari are three different signals. 22 circles, five sort lenses, search and filters, circle creation, and an in-person mode that switches the app off at a meetup. Conversation prompts gained their own replies. | ✅ Live |
 | **3** | Language as a barrier: bilingual prompts and keyword hints for non-native speakers. Backend for shared circles across devices, real dates, evaluation-study integration. | Planned |
 
 ## Repository

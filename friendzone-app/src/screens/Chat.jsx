@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowLeft, CalendarCheck, Lightbulb, RefreshCw, Send, Sparkles, Users } from 'lucide-react'
-import { GROUP_MAP } from '../data/groups.js'
 import { pickReply, promptsFor, replyPoolFor } from '../data/prompts.js'
 import Avatar from '../components/Avatar.jsx'
 import PointBurst from '../components/PointBurst.jsx'
-import { useStore, bonusActive, bonusDaysLeft, BONUS_AMOUNT } from '../store/useStore.jsx'
+import { useStore, bonusActive, bonusDaysLeft, findGroup, BONUS_AMOUNT } from '../store/useStore.jsx'
 
 function TypingDots({ member }) {
   return (
@@ -48,6 +47,19 @@ function MeetupBanner({ group, state, dispatch }) {
   const bonus = bonusActive(state, group.id)
   const left = bonusDaysLeft(state, group.id)
 
+  // Available from every state after RSVP: you may be at the meetup now, or back
+  // at a later one, and leaving the mode by accident should not lock you out.
+  const hereButton = (tone = 'sage') => (
+    <button
+      className={`btn btn-sm ${tone === 'gold' ? '' : 'btn-sage'}`}
+      onClick={() => dispatch({ type: 'ENTER_MEETUP_MODE', groupId: group.id })}
+      title="Switch the app into in-person mode"
+      style={tone === 'gold' ? { background: '#5a3d00', color: '#fbf0d0' } : undefined}
+    >
+      I’m here
+    </button>
+  )
+
   if (bonus) {
     return (
       <motion.div
@@ -72,12 +84,37 @@ function MeetupBanner({ group, state, dispatch }) {
             +{BONUS_AMOUNT} per day for {left} more day{left === 1 ? '' : 's'}
           </div>
         </div>
+        {hereButton('gold')}
       </motion.div>
     )
   }
 
   if (m.attendedDay != null) {
-    return null
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        style={{
+          margin: '10px 16px 0',
+          padding: '12px 14px',
+          borderRadius: 16,
+          background: 'var(--paper)',
+          border: '1px solid var(--line)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}
+      >
+        <CalendarCheck size={18} style={{ color: 'var(--sage-deep)', flexShrink: 0 }} />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontWeight: 800, fontSize: 13.5 }}>You were there</div>
+          <div style={{ fontSize: 12.5, color: 'var(--ink-soft)' }}>
+            The bonus starts tomorrow. Keep the thread going.
+          </div>
+        </div>
+        {hereButton()}
+      </motion.div>
+    )
   }
 
   if (m.rsvpDay != null) {
@@ -103,13 +140,7 @@ function MeetupBanner({ group, state, dispatch }) {
             {group.meetup.day} {group.meetup.time} · {group.meetup.place}
           </div>
         </div>
-        <button
-          className="btn btn-sage btn-sm"
-          onClick={() => dispatch({ type: 'ATTEND_MEETUP', groupId: group.id })}
-          title="Demo: mark this meetup as attended"
-        >
-          I went
-        </button>
+        {hereButton()}
       </motion.div>
     )
   }
@@ -145,7 +176,7 @@ function MeetupBanner({ group, state, dispatch }) {
 
 export default function Chat({ groupId, onBack }) {
   const { state, dispatch } = useStore()
-  const group = GROUP_MAP[groupId]
+  const group = findGroup(state, groupId)
   const messages = state.messages[groupId] || []
   const [text, setText] = useState('')
   const [typing, setTyping] = useState(null)
@@ -191,9 +222,16 @@ export default function Chat({ groupId, onBack }) {
     // Simulated reply from a circle member so the prototype feels alive.
     // The pool is chosen from the prompt that was answered, or from keywords in
     // a free-typed message, so two different questions get two different answers.
-    const reply = pickReply(replyPoolFor(t, usedPromptId.current, group), recentReplies.current)
-    recentReplies.current = [...recentReplies.current, reply].slice(-6)
+    // Read the prompt id before clearing it: the reply must answer the question
+    // that was actually asked.
+    const answering = usedPromptId.current
     usedPromptId.current = null
+
+    // A circle you just started has no members yet, so nobody answers.
+    if (!group.members.length) return
+
+    const reply = pickReply(replyPoolFor(t, answering, group), recentReplies.current)
+    recentReplies.current = [...recentReplies.current, reply].slice(-6)
 
     const others = group.members.filter((m) => m.name !== lastSpeaker.current)
     const bench = others.length ? others : group.members

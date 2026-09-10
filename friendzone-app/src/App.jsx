@@ -11,6 +11,8 @@ import Discover from './screens/Discover.jsx'
 import Chats from './screens/Chats.jsx'
 import Chat from './screens/Chat.jsx'
 import Profile from './screens/Profile.jsx'
+import MeetupMode from './screens/MeetupMode.jsx'
+import CreateCircle from './screens/CreateCircle.jsx'
 
 const slide = {
   initial: (dir) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
@@ -62,6 +64,10 @@ function Shell() {
   const tabScreen = ['discover', 'chats', 'profile'].includes(screen)
   const notDoneToday = state.joinedGroups.filter((g) => state.checkIns[g] !== state.day).length
 
+  // At an in-person meetup the app hands the screen over entirely. No tabs, no
+  // chat, no badge popups, nothing to earn. Leaving restores the previous screen.
+  if (state.meetupMode) return <MeetupMode />
+
   return (
     <>
       <AnimatePresence custom={dir} initial={false}>
@@ -84,12 +90,18 @@ function Shell() {
             />
           </motion.div>
         )}
+        {screen === 'create' && (
+          <motion.div key="create" custom={dir} variants={slide} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0, background: 'var(--cream)', zIndex: 30 }}>
+            <CreateCircle onBack={() => go('discover', -1)} onCreated={(id) => openChat(id)} />
+          </motion.div>
+        )}
         {screen === 'discover' && (
           <motion.div key="discover" variants={fade} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0 }}>
             <Discover
               onOpenChat={openChat}
               onEditInterests={() => go('interests', -1)}
               onEditProfile={() => openAbout('discover')}
+              onCreate={() => go('create', 1)}
             />
           </motion.div>
         )}

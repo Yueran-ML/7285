@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { GROUP_MAP } from '../data/groups.js'
+import { GROUPS, GROUP_MAP } from '../data/groups.js'
 import { BADGES } from '../data/badges.js'
 import { emptyProfile } from '../data/profile.js'
 
@@ -18,12 +18,18 @@ export const initialState = {
   // Optional. Everything here is user-declared and may stay blank.
   profile: emptyProfile,
   day: 1,
+  // Circles the user started. Same shape as the seed circles, so every screen
+  // and the matcher treat them identically.
+  customGroups: [],
   joinedGroups: [],
   messages: {}, // groupId -> [{ id, from, text, day, mine }]
   points: 0,
   pointLog: [], // { day, groupId, amount, reason }
   checkIns: {}, // groupId -> last day earned
   meetups: {}, // groupId -> { rsvpDay, attendedDay }
+  // groupId while the user is physically at that circle's meetup. Everything
+  // except the in-person prompt deck is switched off while this is set.
+  meetupMode: null,
   unlockedBadges: [],
   pendingBadges: [],
   lastEarned: null, // { id, amount, reason, groupId }
@@ -109,6 +115,17 @@ function reducer(state, action) {
       return withBadges({ ...state, joinedGroups: [...state.joinedGroups, action.groupId], messages })
     }
 
+    case 'CREATE_GROUP': {
+      const g = action.group
+      // Starting a circle joins you to it. You are its first member.
+      return withBadges({
+        ...state,
+        customGroups: [...state.customGroups, g],
+        joinedGroups: [...state.joinedGroups, g.id],
+        messages: { ...state.messages, [g.id]: [] },
+      })
+    }
+
     case 'LEAVE_GROUP':
       return { ...state, joinedGroups: state.joinedGroups.filter((g) => g !== action.groupId) }
 
@@ -149,6 +166,22 @@ function reducer(state, action) {
         meetups: { ...state.meetups, [action.groupId]: { ...(state.meetups[action.groupId] || {}), attendedDay: state.day } },
       })
 
+    case 'ENTER_MEETUP_MODE':
+      return { ...state, meetupMode: action.groupId }
+
+    case 'EXIT_MEETUP_MODE': {
+      const groupId = state.meetupMode
+      if (!groupId) return { ...state, meetupMode: null }
+      // Having been there is what marks attendance. The post-meetup bonus
+      // window starts from this day, which is the point of the whole flow.
+      const m = state.meetups[groupId] || {}
+      const meetups =
+        m.attendedDay != null
+          ? state.meetups
+          : { ...state.meetups, [groupId]: { ...m, attendedDay: state.day } }
+      return withBadges({ ...state, meetupMode: null, meetups })
+    }
+
     case 'ADVANCE_DAY':
       return { ...state, day: state.day + 1 }
 
@@ -176,6 +209,7 @@ function load() {
       ...parsed,
       // Saves from iteration 1 have no profile; merge so a partial one is safe too.
       profile: { ...emptyProfile, ...(parsed.profile || {}) },
+      customGroups: parsed.customGroups || [],
       lastEarned: null,
       pendingBadges: [],
     }
@@ -210,6 +244,16 @@ export function useStore() {
 }
 
 // derived helpers
+
+// Seed circles plus anything the user started. Every screen reads circles
+// through these two so a created circle behaves exactly like a built-in one.
+export function allGroups(state) {
+  return state.customGroups?.length ? [...GROUPS, ...state.customGroups] : GROUPS
+}
+
+export function findGroup(state, id) {
+  return GROUP_MAP[id] || state.customGroups?.find((g) => g.id === id) || null
+}
 
 export function streakDays(state) {
   const days = new Set(state.pointLog.map((p) => p.day))

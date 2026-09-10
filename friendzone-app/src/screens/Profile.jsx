@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion'
 import { Flame, Lock, Pencil, RotateCcw, SkipForward } from 'lucide-react'
 import { BADGES } from '../data/badges.js'
-import { GROUP_MAP } from '../data/groups.js'
 import { DISLIKE_MAP, LIKE_MAP, SOCIAL_STYLE_MAP, ZODIAC_MAP } from '../data/profile.js'
 import Avatar from '../components/Avatar.jsx'
-import { useStore, streakDays, dayLabel } from '../store/useStore.jsx'
+import { useStore, streakDays, dayLabel, findGroup } from '../store/useStore.jsx'
 
 function Ring({ value, max, size = 132, stroke = 11 }) {
   const r = (size - stroke) / 2
@@ -52,7 +51,7 @@ export default function Profile({ narrow, onEditProfile }) {
   const earnedDays = new Set(state.pointLog.map((p) => p.day))
 
   const perGroup = state.joinedGroups.map((id) => ({
-    group: GROUP_MAP[id],
+    group: findGroup(state, id),
     pts: state.pointLog.filter((p) => p.groupId === id).reduce((a, p) => a + p.amount, 0),
   }))
 

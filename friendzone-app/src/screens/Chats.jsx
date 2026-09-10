@@ -1,12 +1,11 @@
 import { motion } from 'framer-motion'
 import { ChevronRight, Compass } from 'lucide-react'
-import { GROUP_MAP } from '../data/groups.js'
 import { AvatarStack } from '../components/Avatar.jsx'
-import { useStore, bonusActive } from '../store/useStore.jsx'
+import { useStore, bonusActive, findGroup } from '../store/useStore.jsx'
 
 export default function Chats({ onOpenChat, onDiscover }) {
   const { state } = useStore()
-  const groups = state.joinedGroups.map((id) => GROUP_MAP[id]).filter(Boolean)
+  const groups = state.joinedGroups.map((id) => findGroup(state, id)).filter(Boolean)
 
   return (
     <div className="scroll" style={{ position: 'absolute', inset: 0, padding: '58px 18px 110px' }}>
