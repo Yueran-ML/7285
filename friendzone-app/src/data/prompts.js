@@ -17,6 +17,7 @@ export const PROMPTS = {
   food: [
     {
       id: 'cook-hometown',
+      level: 1,
       text: "What's a dish from your hometown you miss?",
       replies: [
         'My mum makes this soup with pork bones and radish. Two years since I had it properly.',
@@ -28,6 +29,7 @@ export const PROMPTS = {
     },
     {
       id: 'cook-cheap',
+      level: 2,
       text: "Best cheap meal you've made this week?",
       replies: [
         'Fried rice with whatever was dying in the fridge. Four dollars, genuinely good.',
@@ -38,6 +40,7 @@ export const PROMPTS = {
     },
     {
       id: 'cook-rice',
+      level: 1,
       text: 'Rice cooker or stovetop, which team are you on?',
       replies: [
         'Rice cooker, no contest. I brought mine on the plane.',
@@ -48,6 +51,7 @@ export const PROMPTS = {
     },
     {
       id: 'cook-spice',
+      level: 2,
       text: "One spice you can't live without?",
       replies: [
         'Cumin. I put it in things it does not belong in.',
@@ -58,6 +62,7 @@ export const PROMPTS = {
     },
     {
       id: 'cook-saturday',
+      level: 3,
       text: 'What would you cook if you had a whole kitchen to yourself on Saturday?',
       replies: [
         'Something slow. A braise that takes four hours and makes the whole floor smell good.',
@@ -71,6 +76,7 @@ export const PROMPTS = {
   screen: [
     {
       id: 'film-cry',
+      level: 3,
       text: 'Last film that made you cry?',
       replies: [
         'Grave of the Fireflies. I was not okay for a day after.',
@@ -81,6 +87,7 @@ export const PROMPTS = {
     },
     {
       id: 'film-comfort',
+      level: 2,
       text: "What's your comfort movie, the one you rewatch?",
       replies: [
         'Kiki’s Delivery Service. Puts me back together every time.',
@@ -91,6 +98,7 @@ export const PROMPTS = {
     },
     {
       id: 'film-where',
+      level: 1,
       text: 'Cinema or couch?',
       replies: [
         'Cinema. Phone off, no pausing, it forces you to actually watch.',
@@ -101,6 +109,7 @@ export const PROMPTS = {
     },
     {
       id: 'film-unpopular',
+      level: 2,
       text: 'A film everyone loves that you just do not get?',
       replies: [
         'La La Land. I know. I have made peace with being wrong about it.',
@@ -114,6 +123,7 @@ export const PROMPTS = {
   study: [
     {
       id: 'study-spot',
+      level: 2,
       text: "What's your go-to study spot on campus?",
       replies: [
         'Central Library level 2, by the windows. Quiet but not oppressively so.',
@@ -124,6 +134,7 @@ export const PROMPTS = {
     },
     {
       id: 'study-drink',
+      level: 1,
       text: 'Coffee or tea while studying?',
       replies: [
         'Coffee until 2pm, tea after, or I do not sleep.',
@@ -134,6 +145,7 @@ export const PROMPTS = {
     },
     {
       id: 'study-hardest',
+      level: 2,
       text: 'Hardest course this semester, and why?',
       replies: [
         'Stats. Not the maths, the fact that every lecture assumes I remember the last one.',
@@ -144,6 +156,7 @@ export const PROMPTS = {
     },
     {
       id: 'study-noise',
+      level: 1,
       text: 'Do you study better in silence or with background noise?',
       replies: [
         'Café noise. Total silence makes me hear my own thoughts, which is fatal.',
@@ -157,6 +170,7 @@ export const PROMPTS = {
   gaming: [
     {
       id: 'game-beginner',
+      level: 2,
       text: "What's a game you'd teach a total beginner first?",
       replies: [
         'Stardew Valley. Nothing can go badly wrong and that matters when you are new.',
@@ -167,6 +181,7 @@ export const PROMPTS = {
     },
     {
       id: 'game-coop',
+      level: 1,
       text: 'Co-op or competitive?',
       replies: [
         'Co-op. I get weirdly stressed by competitive lobbies.',
@@ -177,6 +192,7 @@ export const PROMPTS = {
     },
     {
       id: 'game-platform',
+      level: 1,
       text: 'Handheld, PC or console?',
       replies: [
         'Handheld. I moved here with one suitcase, so it was the only option.',
@@ -190,6 +206,7 @@ export const PROMPTS = {
   tabletop: [
     {
       id: 'board-length',
+      level: 1,
       text: 'Fast card game or a three-hour strategy epic?',
       replies: [
         'Fast. My attention span has been destroyed and I accept that.',
@@ -200,6 +217,7 @@ export const PROMPTS = {
     },
     {
       id: 'board-winlose',
+      level: 2,
       text: "What's a game you always win, and one you never do?",
       replies: [
         'I always win Codenames and never win anything requiring spatial reasoning.',
@@ -210,6 +228,7 @@ export const PROMPTS = {
     },
     {
       id: 'board-fromhome',
+      level: 2,
       text: 'Any game from home that nobody here knows?',
       replies: [
         'We play a card game called Doudizhu. Three players, one is the landlord, it gets loud.',
@@ -223,6 +242,7 @@ export const PROMPTS = {
   photography: [
     {
       id: 'photo-goldenhour',
+      level: 2,
       text: 'Best spot in Brisbane for golden hour?',
       replies: [
         'Kangaroo Point cliffs, looking back at the city. Cliché for a reason.',
@@ -233,6 +253,7 @@ export const PROMPTS = {
     },
     {
       id: 'photo-gear',
+      level: 1,
       text: 'Phone or camera?',
       replies: [
         'Phone. The camera stays in the drawer and I have made peace with that.',
@@ -243,6 +264,7 @@ export const PROMPTS = {
     },
     {
       id: 'photo-last',
+      level: 2,
       text: 'Show us the last photo you took, no pressure.',
       replies: [
         'Mine is a blurry photo of a bin chicken stealing chips. Peak Brisbane.',
@@ -256,6 +278,7 @@ export const PROMPTS = {
   fitness: [
     {
       id: 'run-time',
+      level: 1,
       text: 'Morning or evening runs?',
       replies: [
         'Morning. If I leave it to the evening it simply does not happen.',
@@ -266,6 +289,7 @@ export const PROMPTS = {
     },
     {
       id: 'run-audio',
+      level: 1,
       text: 'Music, podcast, or nothing while you run?',
       replies: [
         'Podcast. It tricks me into going further because I want to hear the end.',
@@ -276,6 +300,7 @@ export const PROMPTS = {
     },
     {
       id: 'run-distance',
+      level: 2,
       text: "What's your current comfortable distance?",
       replies: [
         'About 5k. I could push further but comfortable is the key word there.',
@@ -289,6 +314,7 @@ export const PROMPTS = {
   outdoors: [
     {
       id: 'hike-trail',
+      level: 2,
       text: 'Favourite trail so far, or one you want to try?',
       replies: [
         'Summit track at Coot-tha. Not hard, and the view pays out properly.',
@@ -299,6 +325,7 @@ export const PROMPTS = {
     },
     {
       id: 'hike-time',
+      level: 1,
       text: 'Sunrise hike or sunset hike?',
       replies: [
         'Sunrise. Nobody is there and the heat has not started.',
@@ -309,6 +336,7 @@ export const PROMPTS = {
     },
     {
       id: 'hike-snacks',
+      level: 2,
       text: 'Snacks are essential. What do you bring?',
       replies: [
         'Salted nuts and one absurdly good chocolate bar for the summit.',
@@ -322,6 +350,7 @@ export const PROMPTS = {
   coffee: [
     {
       id: 'coffee-order',
+      level: 1,
       text: 'Flat white or long black?',
       replies: [
         'Flat white. I have fully assimilated.',
@@ -332,6 +361,7 @@ export const PROMPTS = {
     },
     {
       id: 'coffee-cafe',
+      level: 2,
       text: 'Best café near campus?',
       replies: [
         'There is a tiny place off Hawken Drive that does a good filter. Never busy.',
@@ -342,6 +372,7 @@ export const PROMPTS = {
     },
     {
       id: 'coffee-count',
+      level: 1,
       text: 'How many coffees is too many?',
       replies: [
         'Three is my line. Four and I can hear colours.',
@@ -355,6 +386,7 @@ export const PROMPTS = {
   music: [
     {
       id: 'music-now',
+      level: 2,
       text: 'What are you listening to right now?',
       replies: [
         'Same three lo-fi playlists on rotation. I have stopped fighting it.',
@@ -365,6 +397,7 @@ export const PROMPTS = {
     },
     {
       id: 'music-concert',
+      level: 2,
       text: "A concert you'd love to see in Brisbane?",
       replies: [
         'Anything at the Tivoli, the room is the right size for actually seeing the band.',
@@ -375,6 +408,7 @@ export const PROMPTS = {
     },
     {
       id: 'music-home',
+      level: 3,
       text: 'Song that instantly reminds you of home?',
       replies: [
         'One my dad played in the car constantly. I skipped it for years, now I seek it out.',
@@ -388,6 +422,7 @@ export const PROMPTS = {
   ballsports: [
     {
       id: 'ball-pickup',
+      level: 1,
       text: "Pickup game this week, who's in?",
       replies: [
         'In. What time were you thinking?',
@@ -398,6 +433,7 @@ export const PROMPTS = {
     },
     {
       id: 'ball-watching',
+      level: 2,
       text: 'Who are you watching this season?',
       replies: [
         'Nobody consistently, I just watch highlights and pretend I followed the game.',
@@ -411,6 +447,7 @@ export const PROMPTS = {
   wellbeing: [
     {
       id: 'yoga-time',
+      level: 1,
       text: 'Morning stretch or evening wind-down?',
       replies: [
         'Evening. It is the only thing that stops me scrolling until 1am.',
@@ -421,6 +458,7 @@ export const PROMPTS = {
     },
     {
       id: 'yoga-where',
+      level: 1,
       text: 'Mat on the grass or in the studio?',
       replies: [
         'Grass. Bit of a mess afterwards but worth it.',
@@ -434,6 +472,7 @@ export const PROMPTS = {
   motorsport: [
     {
       id: 'ms-team',
+      level: 1,
       text: 'Who is everyone actually supporting this season?',
       replies: [
         'Ferrari, and I have suffered for it every year since I was twelve.',
@@ -444,6 +483,7 @@ export const PROMPTS = {
     },
     {
       id: 'ms-start',
+      level: 3,
       text: 'What got you into this in the first place?',
       replies: [
         'My dad had it on every Sunday. Took twenty years to admit I liked it.',
@@ -454,6 +494,7 @@ export const PROMPTS = {
     },
     {
       id: 'ms-track',
+      level: 2,
       text: 'One track you would fly across the world to see live?',
       replies: [
         'Spa. Eau Rouge in person, then I can die happy.',
@@ -467,6 +508,7 @@ export const PROMPTS = {
   language: [
     {
       id: 'lang-hard',
+      level: 2,
       text: 'What is the hardest part of the language you are learning?',
       replies: [
         'Tones. I say the right word with the wrong shape and it means something else entirely.',
@@ -477,6 +519,7 @@ export const PROMPTS = {
     },
     {
       id: 'lang-mistake',
+      level: 3,
       text: 'Best mistake you have made in another language?',
       replies: [
         'Told my tutor I was pregnant instead of embarrassed. Never recovered.',
@@ -490,6 +533,7 @@ export const PROMPTS = {
   general: [
     {
       id: 'gen-from',
+      level: 1,
       text: 'Where are you from originally?',
       replies: [
         'A small city a few hours from Shanghai. Nobody has heard of it, which I enjoy.',
@@ -500,6 +544,7 @@ export const PROMPTS = {
     },
     {
       id: 'gen-surprised',
+      level: 3,
       text: 'What surprised you most about Brisbane?',
       replies: [
         'How early everything closes. I was not prepared for 5pm on a Sunday.',
@@ -510,6 +555,7 @@ export const PROMPTS = {
     },
     {
       id: 'gen-semester',
+      level: 2,
       text: "One thing you'd like to do this semester?",
       replies: [
         'Actually leave the campus bubble once a fortnight. Low bar, still failing it.',
@@ -520,6 +566,7 @@ export const PROMPTS = {
     },
     {
       id: 'gen-win',
+      level: 3,
       text: "What's a small win you had this week?",
       replies: [
         'Submitted something two hours early instead of two minutes. Growth.',
@@ -530,6 +577,7 @@ export const PROMPTS = {
     },
     {
       id: 'gen-forward',
+      level: 3,
       text: "What's something you're looking forward to?",
       replies: [
         'Family visiting in December. Counting weeks at this point.',
@@ -667,8 +715,18 @@ export function meetupPromptsFor(tags = []) {
 const ALL_PROMPTS = Object.values(PROMPTS).flat()
 const PROMPT_BY_ID = Object.fromEntries(ALL_PROMPTS.map((p) => [p.id, p]))
 
-export function promptsFor(tags = []) {
-  return poolForTags(PROMPTS, tags)
+// Prompts carry a disclosure level, following the graded self-disclosure that
+// builds closeness between strangers (Aron et al., 1997):
+//   1  a concrete preference, answerable in a few words
+//   2  a small story or an opinion
+//   3  reflection, more revealing
+//
+// A circle you just walked into only offers level 1. As it ages, deeper levels
+// open and are shown first, while the lighter ones stay in the deck behind
+// them. Nothing is ever taken away, so there is always an easy option.
+export function promptsFor(tags = [], maxLevel = 3) {
+  const pool = poolForTags(PROMPTS, tags).filter((p) => (p.level || 1) <= maxLevel)
+  return [...pool].sort((a, b) => (b.level || 1) - (a.level || 1))
 }
 
 // Free-text fallbacks. Checked in order, so the specific ones sit above the

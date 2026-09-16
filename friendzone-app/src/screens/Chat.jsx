@@ -4,7 +4,15 @@ import { ArrowLeft, CalendarCheck, Lightbulb, RefreshCw, Send, Sparkles, Users }
 import { pickReply, promptsFor, replyPoolFor } from '../data/prompts.js'
 import Avatar from '../components/Avatar.jsx'
 import PointBurst from '../components/PointBurst.jsx'
-import { useStore, bonusActive, bonusDaysLeft, findGroup, BONUS_AMOUNT } from '../store/useStore.jsx'
+import {
+  useStore,
+  bonusActive,
+  bonusDaysLeft,
+  findGroup,
+  promptLevel,
+  PROMPT_LEVEL_LABELS,
+  BONUS_AMOUNT,
+} from '../store/useStore.jsx'
 
 function TypingDots({ member }) {
   return (
@@ -191,7 +199,8 @@ export default function Chat({ groupId, onBack }) {
   const recentReplies = useRef([])
   const lastSpeaker = useRef(null)
 
-  const prompts = useMemo(() => promptsFor(group?.tags), [group])
+  const level = promptLevel(state, groupId)
+  const prompts = useMemo(() => promptsFor(group?.tags, level), [group, level])
   const prompt = prompts[promptIdx % prompts.length]
   const doneToday = state.checkIns[groupId] === state.day
   const bonus = bonusActive(state, groupId)
@@ -389,6 +398,23 @@ export default function Chat({ groupId, onBack }) {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, fontWeight: 800, color: 'var(--terracotta)', letterSpacing: '0.06em' }}>
                 <Lightbulb size={13} /> NEED A NUDGE?
+                <span
+                  style={{ marginLeft: 'auto', display: 'flex', gap: 3, alignItems: 'center' }}
+                  title={PROMPT_LEVEL_LABELS[level]}
+                  aria-label={PROMPT_LEVEL_LABELS[level]}
+                >
+                  {[1, 2, 3].map((n) => (
+                    <span
+                      key={n}
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: '50%',
+                        background: n <= level ? 'var(--terracotta)' : 'var(--line-strong)',
+                      }}
+                    />
+                  ))}
+                </span>
               </div>
               <AnimatePresence mode="wait">
                 <motion.p
@@ -402,6 +428,9 @@ export default function Chat({ groupId, onBack }) {
                   “{prompt.text}”
                 </motion.p>
               </AnimatePresence>
+              <p style={{ fontSize: 11.5, color: 'var(--muted)', lineHeight: 1.4, marginTop: -2 }}>
+                {PROMPT_LEVEL_LABELS[level]}
+              </p>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button className="btn btn-primary btn-sm" onClick={usePrompt}>
                   Use this

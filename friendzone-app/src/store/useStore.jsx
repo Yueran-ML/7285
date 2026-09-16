@@ -22,6 +22,9 @@ export const initialState = {
   // and the matcher treat them identically.
   customGroups: [],
   joinedGroups: [],
+  // groupId -> the day you joined. Drives how personal the prompts get, so a
+  // circle you just walked into opens with something light.
+  joinedOn: {},
   messages: {}, // groupId -> [{ id, from, text, day, mine }]
   points: 0,
   pointLog: [], // { day, groupId, amount, reason }
@@ -112,7 +115,12 @@ function reducer(state, action) {
       const messages = state.messages[action.groupId]
         ? state.messages
         : { ...state.messages, [action.groupId]: seedMessages(action.groupId, state.day) }
-      return withBadges({ ...state, joinedGroups: [...state.joinedGroups, action.groupId], messages })
+      return withBadges({
+        ...state,
+        joinedGroups: [...state.joinedGroups, action.groupId],
+        joinedOn: { ...state.joinedOn, [action.groupId]: state.day },
+        messages,
+      })
     }
 
     case 'CREATE_GROUP': {
@@ -122,6 +130,7 @@ function reducer(state, action) {
         ...state,
         customGroups: [...state.customGroups, g],
         joinedGroups: [...state.joinedGroups, g.id],
+        joinedOn: { ...state.joinedOn, [g.id]: state.day },
         messages: { ...state.messages, [g.id]: [] },
       })
     }
@@ -210,6 +219,7 @@ function load() {
       // Saves from iteration 1 have no profile; merge so a partial one is safe too.
       profile: { ...emptyProfile, ...(parsed.profile || {}) },
       customGroups: parsed.customGroups || [],
+      joinedOn: parsed.joinedOn || {},
       lastEarned: null,
       pendingBadges: [],
     }
@@ -253,6 +263,28 @@ export function allGroups(state) {
 
 export function findGroup(state, id) {
   return GROUP_MAP[id] || state.customGroups?.find((g) => g.id === id) || null
+}
+
+// How long you have been in a circle, in simulated days.
+export function daysInCircle(state, groupId) {
+  const since = state.joinedOn?.[groupId]
+  if (since == null) return state.day - 1 // saves from before this field existed
+  return Math.max(0, state.day - since)
+}
+
+// Which disclosure level of prompts a circle offers. Time in the circle is the
+// only input: nothing here is earned, and nothing is taken away.
+export const PROMPT_LEVEL_LABELS = {
+  1: 'Light openers for now. These get more personal as the circle gets older.',
+  2: 'A bit more personal, now that you have been here a few days.',
+  3: 'The deeper prompts are open.',
+}
+
+export function promptLevel(state, groupId) {
+  const days = daysInCircle(state, groupId)
+  if (days >= 4) return 3
+  if (days >= 2) return 2
+  return 1
 }
 
 export function streakDays(state) {

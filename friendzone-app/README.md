@@ -55,11 +55,14 @@ npm run lint       # oxlint
 9. **Chat** — open Cooking Circle. **Use this** then **Send**: the +1 coin floats up and a member
    answers *that specific question*. **Another**, a different prompt, a different person, a
    different answer. Type something free-form and it still gets a fitting reply.
-10. **Meetup, then in-person mode** — **I'm in**, then **I'm here**. The app goes dark and empties
+10. **Skip a few days, reopen the chat** — the three dots on the prompt card fill in and the
+    questions get more personal. Day 1 asks what dish you miss from home. Day 5 asks what small
+    win you had this week.
+11. **Meetup, then in-person mode** — **I'm in**, then **I'm here**. The app goes dark and empties
     out: no tabs, no chat, no points, one large card at a time. Tap through a few. *"Nothing here
     earns points. Put the phone down."* Tap **I'm off** and you are marked as having attended.
-11. **Skip to tomorrow** — the banner turns gold: *+3 per day for 7 more days*.
-12. **Me** tab — points ring, streak, the **About you** card, badges, per-circle totals.
+12. **Skip to tomorrow** — the banner turns gold: *+3 per day for 7 more days*.
+13. **Me** tab — points ring, streak, the **About you** card, badges, per-circle totals.
 
 **Reset prototype** wipes localStorage and returns to Welcome.
 
@@ -79,6 +82,7 @@ npm run lint       # oxlint
 | Create a circle | Appears in Discover, in search, in Circles, and on the Me tab immediately |
 | Send first message of the day | +1/+3 point burst, header pill, streak, week strip, ring progress |
 | Use / cycle a prompt | Prompt animates; the reply answers *that* prompt, from a different member |
+| Stay in a circle for days | Prompts get more personal. Three dots on the card fill in, and the deepest available level is offered first |
 | Enter in-person mode | Whole app is replaced: dark, no tabs, no chat, no points, one card |
 | Leave in-person mode | Attendance recorded, badge unlocks, bonus window opens the next day |
 | Advance day | Status bar, waiting nudges, bonus countdown, streak all update |
@@ -140,6 +144,13 @@ recommended; everything else collapses under "Browse N other circles" rather tha
 `data/prompts.js` holds prompts keyed at whichever level of the interest tree suits them, mostly the
 root. A circle tagged `f1-ferrari` walks up its path and inherits the `motorsport` prompts, so
 specific circles are never left with nothing to say.
+
+Every prompt also carries a disclosure level, following the graded self-disclosure that builds
+closeness between strangers (Aron et al., 1997). Level 1 is a concrete preference answerable in a few
+words, level 2 is a small story or an opinion, level 3 is reflection. A circle you just joined offers
+level 1 only. After two days in it level 2 opens, after four days level 3, and the deepest available
+level is shown first while the lighter ones stay in the deck behind it. Nothing is ever taken away,
+so there is always an easy option. Three dots on the prompt card show where the circle is.
 
 Each prompt carries 4–5 replies written to answer that specific question, and roughly one in three
 hands the question back to keep the thread going. Free-typed messages fall through 14 keyword
