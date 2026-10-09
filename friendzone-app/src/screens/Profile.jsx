@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import { Flame, Lock, Pencil, RotateCcw, SkipForward } from 'lucide-react'
+import { ChevronRight, Flame, Lock, Nfc, Pencil, RotateCcw, SkipForward } from 'lucide-react'
 import { BADGES } from '../data/badges.js'
+import { BOARD_WINDOW_DAYS, fmtDuration, myRanks, myWindow, peopleLabel } from '../data/board.js'
 import { DISLIKE_MAP, LIKE_MAP, SOCIAL_STYLE_MAP, ZODIAC_MAP } from '../data/profile.js'
 import Avatar from '../components/Avatar.jsx'
 import { useStore, streakDays, dayLabel, findGroup } from '../store/useStore.jsx'
@@ -35,9 +36,11 @@ function Ring({ value, max, size = 132, stroke = 11 }) {
   )
 }
 
-export default function Profile({ narrow, onEditProfile }) {
+export default function Profile({ narrow, onEditProfile, onOpenBoard }) {
   const { state, dispatch } = useStore()
   const streak = streakDays(state)
+  const inPerson = myWindow(state)
+  const place = myRanks(state)
   const p = state.profile
   const style = p.socialStyle ? SOCIAL_STYLE_MAP[p.socialStyle] : null
   const sign = p.zodiac ? ZODIAC_MAP[p.zodiac] : null
@@ -112,9 +115,57 @@ export default function Profile({ narrow, onEditProfile }) {
               'You’ve unlocked every point badge. Nice.'
             )}
           </p>
-          <p style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 8 }}>Points never reset. There’s no leaderboard.</p>
+          <p style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 8 }}>Points never reset and are never ranked.</p>
         </div>
       </motion.section>
+
+      {/* in person: the one thing that is ranked */}
+      <motion.button
+        className="card"
+        onClick={onOpenBoard}
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.12, duration: 0.5 }}
+        whileTap={{ scale: 0.985 }}
+        style={{ width: '100%', marginTop: 12, padding: 16, display: 'flex', alignItems: 'center', gap: 13, textAlign: 'left' }}
+      >
+        <span
+          style={{
+            flexShrink: 0,
+            width: 42,
+            height: 42,
+            borderRadius: 14,
+            background: inPerson.people ? 'var(--sage-soft)' : 'var(--cream-deep)',
+            color: inPerson.people ? 'var(--sage-deep)' : 'var(--muted)',
+            display: 'grid',
+            placeItems: 'center',
+          }}
+        >
+          <Nfc size={20} />
+        </span>
+        <span style={{ flex: 1, minWidth: 0 }}>
+          <span className="eyebrow" style={{ display: 'block', color: 'var(--sage-deep)' }}>
+            In person · last {BOARD_WINDOW_DAYS} days
+          </span>
+          {inPerson.people ? (
+            <>
+              <span style={{ display: 'block', fontFamily: 'var(--font-display)', fontSize: 19, fontWeight: 600, marginTop: 3 }}>
+                {fmtDuration(inPerson.minutes)} with {peopleLabel(inPerson.people)}
+              </span>
+              <span style={{ display: 'block', fontSize: 12, color: 'var(--muted)', fontWeight: 700, marginTop: 1 }}>
+                #{place.minutes} by time · #{place.people} by people · of {place.total}
+              </span>
+            </>
+          ) : (
+            <span style={{ display: 'block', fontSize: 13, color: 'var(--ink-soft)', lineHeight: 1.45, marginTop: 3 }}>
+              {state.encounters.length
+                ? `No taps in the last ${BOARD_WINDOW_DAYS} days. Meet your circle and touch phones to get back on the board.`
+                : 'No taps yet. Meet your circle, touch phones, and it shows up here.'}
+            </span>
+          )}
+        </span>
+        <ChevronRight size={18} color="var(--muted)" style={{ flexShrink: 0 }} />
+      </motion.button>
 
       {/* about you */}
       <motion.section initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14, duration: 0.5 }} style={{ marginTop: 26 }}>

@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion'
-import { Compass, MessageCircle, User } from 'lucide-react'
+import { Compass, MessageCircle, Trophy, User } from 'lucide-react'
 
 const TABS = [
   { id: 'discover', label: 'Discover', Icon: Compass },
   { id: 'chats', label: 'Circles', Icon: MessageCircle },
+  { id: 'board', label: 'Board', Icon: Trophy },
   { id: 'profile', label: 'Me', Icon: User },
 ]
 
@@ -43,12 +44,12 @@ export default function TabBar({ active, onChange, unread = 0 }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 7,
+                gap: 5,
                 padding: '11px 0',
                 borderRadius: 999,
                 color: on ? 'var(--ink)' : 'rgba(255,255,255,0.72)',
                 fontWeight: 800,
-                fontSize: 13,
+                fontSize: 12.5,
                 zIndex: 1,
               }}
             >
@@ -59,14 +60,14 @@ export default function TabBar({ active, onChange, unread = 0 }) {
                   style={{ position: 'absolute', inset: 0, background: 'var(--paper)', borderRadius: 999, zIndex: -1 }}
                 />
               )}
-              <Icon size={17} strokeWidth={2.4} />
+              <Icon size={16} strokeWidth={2.4} />
               <span>{label}</span>
               {id === 'chats' && unread > 0 && !on && (
                 <span
                   style={{
                     position: 'absolute',
                     top: 6,
-                    right: 'calc(50% - 32px)',
+                    right: 'calc(50% - 30px)',
                     width: 8,
                     height: 8,
                     borderRadius: '50%',

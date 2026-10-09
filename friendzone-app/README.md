@@ -1,12 +1,26 @@
-# FriendZone — Iteration 2 prototype
+# FriendZone — Iteration 3 prototype
 
 Interactive React prototype for DECO7285. Iteration 1 was shown at the Week 8 exhibit.
 
-**Concept.** Newcomers to Brisbane join small interest-based circles. Conversation prompts give them
-*something to do rather than something to say*. One point per circle per day for showing up, cosmetic
-badges, and a 7-day post-meetup bonus so connections survive the first in-person meeting.
+**Concept.** Newcomers to Brisbane join small interest-based circles and chat there until the circle
+meets. At the meetup two phones touch, a clock starts, and a seven-day board shows who has been
+showing up in person. Chat points, cosmetic badges and a 7-day post-meetup bonus carry the thread on
+afterwards.
 
-## New in iteration 2
+## New in iteration 3
+
+| | |
+|---|---|
+| **Tap phones in person** | At a meetup the screen becomes the table: everyone else's phone in a row, yours below. Drag yours onto someone's and hold it there, or tap them and it travels over by itself. Contact takes two thirds of a second, the way an NFC read does. |
+| **A clock per person** | The session clock starts on the first tap. Each person's time runs from the minute they were tapped, so arriving late shows. A session closes itself at four hours. |
+| **The in-person board** | The last 7 days, ranked by time together or by people met. Built from taps and nothing else. |
+| **Attendance is a tap** | Opening a screen no longer counts as having been there. No tap, no meetup. |
+| **Removed** | The in-person prompt deck and its "put the phone down" mode, after Week 8 feedback that the feature was not justified by the problem. |
+
+The NFC exchange itself is simulated. The drag stands in for it, and the screen says so. Everything
+after the tap (the clock, the summary, the board) runs for real on the recorded taps.
+
+## Carried over from iteration 2
 
 | | |
 |---|---|
@@ -15,7 +29,7 @@ badges, and a 7-day post-meetup bonus so connections survive the first in-person
 | **22 circles, five sort lenses** | Up from eight. Sort by best match, interests, how you meet, star sign, or most room. |
 | **Search and filters** | Free-text over names, blurbs, places and the full interest trail, plus filters for pace, day of the week and circles with space left. |
 | **Start your own circle** | If nothing fits, make it. Created circles behave exactly like seeded ones everywhere in the app. |
-| **In-person mode** | At a meetup, one tap switches the whole app off except a deck of prompts written for a table rather than a chat. |
+| **In-person mode** | Replaced in iteration 3 by tapping phones. It switched the app off at a meetup except for a deck of prompts written for a table. |
 | **Replies that answer the question** | Each prompt carries its own replies, and free-typed messages fall through keyword responders. Two different questions no longer get the same answer. |
 
 ## Run it
@@ -58,11 +72,17 @@ npm run lint       # oxlint
 10. **Skip a few days, reopen the chat** — the three dots on the prompt card fill in and the
     questions get more personal. Day 1 asks what dish you miss from home. Day 5 asks what small
     win you had this week.
-11. **Meetup, then in-person mode** — **I'm in**, then **I'm here**. The app goes dark and empties
-    out: no tabs, no chat, no points, one large card at a time. Tap through a few. *"Nothing here
-    earns points. Put the phone down."* Tap **I'm off** and you are marked as having attended.
-12. **Skip to tomorrow** — the banner turns gold: *+3 per day for 7 more days*.
-13. **Me** tab — points ring, streak, the **About you** card, badges, per-circle totals.
+11. **Meetup: tap phones** — **I'm in**, then **I'm here**. The screen becomes the table. Drag your
+    phone onto someone's and hold it there: a ring closes, the phones bump, and the clock starts.
+    Tapping a person does the same thing by itself. **Skip 30 min** a couple of times, tap the rest,
+    then **End meetup**.
+12. **The summary** — who you were with and for how long, and where that puts you on the board.
+13. **Board** tab — the last 7 days. Switch between **Time together** and **People met** and the
+    rows re-rank. You are shown between your two neighbours. People you tapped carry a MET tag, and
+    their numbers went up as well.
+14. **Skip to tomorrow** — the chat banner turns gold: *+3 per day for 7 more days*. Skip a week
+    and you drop off the board, because it only looks back seven days.
+15. **Me** tab — points ring, streak, the in-person card, **About you**, badges, per-circle totals.
 
 **Reset prototype** wipes localStorage and returns to Welcome.
 
@@ -83,18 +103,29 @@ npm run lint       # oxlint
 | Send first message of the day | +1/+3 point burst, header pill, streak, week strip, ring progress |
 | Use / cycle a prompt | Prompt animates; the reply answers *that* prompt, from a different member |
 | Stay in a circle for days | Prompts get more personal. Three dots on the card fill in, and the deepest available level is offered first |
-| Enter in-person mode | Whole app is replaced: dark, no tabs, no chat, no points, one card |
-| Leave in-person mode | Attendance recorded, badge unlocks, bonus window opens the next day |
-| Advance day | Status bar, waiting nudges, bonus countdown, streak all update |
+| Drag your phone onto someone's | Their phone lights up and a ring fills while you hold. Then the tap lands: burst, tick, and their clock starts |
+| Pass over a phone without stopping | Nothing. Contact needs two thirds of a second, or letting go while still touching |
+| Tap a second person later | Their clock starts from that minute, not from the start of the meetup |
+| Skip 30 min | Every running clock jumps forward together, up to the four-hour cap |
+| End meetup | Summary with time per person, attendance recorded, badge unlocks, bonus window opens the next day |
+| Switch the board's measure | The same people re-ranked by time or by head-count, rows sliding to their new places |
+| Advance day | Status bar, waiting nudges, bonus countdown and streak update. The board shifts, and taps older than seven days drop off |
 
 ## Design decisions tied to research
 
 - **Prompts, not blank inputs** — interview finding: "people have something to focus on so they
   don't need to keep thinking of new conversation topics."
-- **Cumulative, non-resetting points, no leaderboard** — A1 ethics row 2 (gamification as
-  manipulation) and row 5 (extrinsic crowding out intrinsic motivation).
-- **In-person mode earns nothing** — the app's job at a meetup is to get out of the way. Rewarding
-  screen time at the exact moment someone is finally face to face would undo the whole design.
+- **Chat points stay cumulative and unranked** — A1 ethics row 2 (gamification as manipulation) and
+  row 5 (extrinsic crowding out intrinsic motivation). Nothing about them changed in iteration 3.
+- **Count the meeting, not the messaging** — the project's aim is face-to-face contact, so the one
+  thing counted in public is time actually spent together. A tap is the only evidence of that the
+  app can collect without tracking where anyone is.
+- **One ranked element, with limits** — A1 argued against leaderboards. The in-person board is a
+  deliberate change of position for iteration 3, and it is kept narrow. Nobody is listed until they
+  have a tap, so there is no last place for someone who has met no one. It looks back seven days,
+  so a newcomer is not behind people who arrived a year ago. A session closes itself at four
+  hours. A tap credits both people. Whether the board motivates or discourages is the first
+  question for the evaluation study.
 - **Post-meetup bonus** — interview finding: "after everyone goes home, you don't really talk again."
 - **Group meetups only, public venues** — A1 ethics row 6 (safety).
 - **No clinical language** — A1 ethics row 4. The social-style question is an introvert/extrovert
@@ -114,11 +145,15 @@ src/
   data/        interests   — the three-level tree, path helpers, overlap scoring
                groups      — 22 circles, pace/traits/involves, matchFacets, sort comparators
                profile     — social styles, likes, dislikes, zodiac
-               prompts     — chat prompts with per-prompt replies, in-person deck, keyword fallbacks
+               prompts     — chat prompts with per-prompt replies, keyword fallbacks
+               session     — the simulated in-person clock
+               board       — the 7-day in-person board, built from taps
                badges
-  store/       useStore.jsx — reducer, persistence, points, bonus, badges, profile, custom circles
+  store/       useStore.jsx — reducer, persistence, points, bonus, badges, profile, custom circles,
+                              tap sessions and encounters
   components/  PhoneFrame, TabBar, Avatar, PointBurst, BadgeUnlock
-  screens/     Welcome, Interests, About, Discover, CreateCircle, Chats, Chat, MeetupMode, Profile
+  screens/     Welcome, Interests, About, Discover, CreateCircle, Chats, Chat, TapSession,
+               SessionSummary, Leaderboard, Profile
 ```
 
 ### How matching works
@@ -161,15 +196,31 @@ the typing delay scales with reply length.
 In a shipped version these replies would be generated per message. They are hand-authored here so
 the exhibit prototype runs with no API key and no per-message cost.
 
-### In-person mode
+### In-person tap and board
 
-`state.meetupMode` holds a circle id. While it is set, `App.jsx` renders `MeetupMode` and nothing
-else — no tab bar, no chat, no badge popups. The deck is shuffled per session and mixes two card
-kinds: *ask the group* and *try this*, the second being a small action rather than a question, which
-is the project's thesis applied to a table rather than a chat. Leaving records attendance and opens
-the bonus window.
+`state.tapSession` holds the live session: `{ groupId, t0, skipped, taps: [{ name, atMin }] }`. While
+it is set, `App.jsx` renders `TapSession` and nothing else. The clock is simulated like the calendar
+(`data/session.js`): one real second is one minute, **Skip 30 min** jumps it forward, and it stops at
+240 minutes.
 
-## Iteration 3 candidates
+A tap is a drag that ends in overlap. `TapSession` measures both phones when the drag starts, and
+once mine covers a quarter of someone else's a 650 ms dwell timer starts. Staying put connects,
+moving off cancels, and letting go while still touching also connects. Tapping a person runs the
+same contact with the phone travelling by itself, which is also the keyboard path. The logic runs
+on pointer events and timers rather than on animation callbacks, so it behaves the same when the
+tab is in the background.
+
+Ending a session writes one `encounter` per person, `{ sessionId, name, day, minutes }`, and marks
+attendance. `data/board.js` builds the board from those. Time is counted once per meetup rather
+than once per person present, a tap is credited to both sides, and anything older than seven days
+is ignored. The fictional members' own activity is generated from their name and the day, so the
+board is the same after a reload and still moves when the day advances.
+
+## Next
+
+- A real tap. Web NFC can read a tag in Chrome for Android, so giving each person an NFC card is
+  the shortest route. Phone-to-phone NFC is not available to web apps, and Web NFC does not exist
+  on iOS
 
 - Bilingual prompts and keyword hints for non-native speakers (A1 ethics row 8, and the language
   barrier raised in every interview)

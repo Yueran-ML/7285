@@ -99,13 +99,13 @@ export default function PhoneFrame({ children }) {
         transition={{ delay: 0.2, duration: 0.6 }}
         style={{ justifySelf: 'end', maxWidth: 300, textAlign: 'right' }}
       >
-        <div className="eyebrow">Iteration 2 · Prototype</div>
+        <div className="eyebrow">Iteration 3 · Prototype</div>
         <h1 style={{ fontSize: 46, marginTop: 10, fontVariationSettings: "'SOFT' 100, 'opsz' 144", fontWeight: 500 }}>
           Friend<em style={{ color: 'var(--terracotta)', fontStyle: 'italic' }}>Zone</em>
         </h1>
         <p style={{ marginTop: 14, color: 'var(--ink-soft)', fontSize: 15, lineHeight: 1.55 }}>
-          Something to <em>do</em>, not something to say. Circles matched on interests, how you like to meet people, and
-          what you would rather avoid.
+          Circles get you into the room. Once you are there, two phones tap, the clock runs, and the board shows who
+          has been showing up.
         </p>
         <p style={{ marginTop: 18, fontSize: 12.5, color: 'var(--muted)' }}>Team FriendZone · DECO7285 · UQ 2026</p>
       </motion.aside>
@@ -169,7 +169,8 @@ export default function PhoneFrame({ children }) {
           Demo controls
         </div>
         <p style={{ marginTop: 8, fontSize: 13.5, color: 'var(--ink-soft)', lineHeight: 1.5 }}>
-          Points are earned once per circle per day. Skip ahead to see streaks and the post-meetup bonus window.
+          Points are earned once per circle per day. Skip ahead to see streaks and the post-meetup bonus window. The
+          in-person board only looks back 7 days, so it moves when the day does.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
           <button className="btn btn-sage" onClick={() => dispatch({ type: 'ADVANCE_DAY' })}>

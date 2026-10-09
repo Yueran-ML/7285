@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useReducer } from 'react
 import { GROUPS, GROUP_MAP } from '../data/groups.js'
 import { BADGES } from '../data/badges.js'
 import { emptyProfile } from '../data/profile.js'
+import { sessionMinutes } from '../data/session.js'
 
 const KEY = 'friendzone-state-v1'
 
@@ -30,9 +31,14 @@ export const initialState = {
   pointLog: [], // { day, groupId, amount, reason }
   checkIns: {}, // groupId -> last day earned
   meetups: {}, // groupId -> { rsvpDay, attendedDay }
-  // groupId while the user is physically at that circle's meetup. Everything
-  // except the in-person prompt deck is switched off while this is set.
-  meetupMode: null,
+  // Set while the user is physically at a circle's meetup. The clock starts on
+  // the first tap (t0), and each person's time runs from the minute they were
+  // tapped. { id, groupId, t0, skipped, taps: [{ name, atMin }] }
+  tapSession: null,
+  // One entry per person per finished session. The in-person board is built
+  // from these and from nothing else. { id, sessionId, groupId, name, day, minutes }
+  encounters: [],
+  sessionSummary: null, // { sessionId, groupId, minutes, before } shown once after a session
   unlockedBadges: [],
   pendingBadges: [],
   lastEarned: null, // { id, amount, reason, groupId }
@@ -175,21 +181,58 @@ function reducer(state, action) {
         meetups: { ...state.meetups, [action.groupId]: { ...(state.meetups[action.groupId] || {}), attendedDay: state.day } },
       })
 
-    case 'ENTER_MEETUP_MODE':
-      return { ...state, meetupMode: action.groupId }
+    case 'START_SESSION':
+      if (state.tapSession) return state
+      return { ...state, tapSession: { id: uid(), groupId: action.groupId, t0: null, skipped: 0, taps: [] } }
 
-    case 'EXIT_MEETUP_MODE': {
-      const groupId = state.meetupMode
-      if (!groupId) return { ...state, meetupMode: null }
-      // Having been there is what marks attendance. The post-meetup bonus
-      // window starts from this day, which is the point of the whole flow.
-      const m = state.meetups[groupId] || {}
+    case 'TAP_PERSON': {
+      const s = state.tapSession
+      if (!s || s.taps.some((t) => t.name === action.name)) return state
+      const at = action.at ?? Date.now()
+      const t0 = s.t0 ?? at
+      const atMin = sessionMinutes({ ...s, t0 }, at)
+      return { ...state, tapSession: { ...s, t0, taps: [...s.taps, { name: action.name, atMin }] } }
+    }
+
+    // Prototype control: jump the session clock forward.
+    case 'SKIP_SESSION_TIME': {
+      const s = state.tapSession
+      if (!s || s.t0 == null) return state
+      return { ...state, tapSession: { ...s, skipped: s.skipped + action.minutes } }
+    }
+
+    case 'END_SESSION': {
+      const s = state.tapSession
+      if (!s) return state
+      // No tap, no meetup. Opening the screen is not proof of having been there.
+      if (!s.taps.length) return { ...state, tapSession: null }
+      const endMin = sessionMinutes(s, action.at ?? Date.now())
+      const fresh = s.taps.map((t) => ({
+        id: uid(),
+        sessionId: s.id,
+        groupId: s.groupId,
+        name: t.name,
+        day: state.day,
+        minutes: Math.max(0, endMin - t.atMin),
+      }))
+      // A tap is what marks attendance. The post-meetup bonus window starts
+      // from this day.
+      const m = state.meetups[s.groupId] || {}
       const meetups =
         m.attendedDay != null
           ? state.meetups
-          : { ...state.meetups, [groupId]: { ...m, attendedDay: state.day } }
-      return withBadges({ ...state, meetupMode: null, meetups })
+          : { ...state.meetups, [s.groupId]: { ...m, attendedDay: state.day } }
+      return withBadges({
+        ...state,
+        tapSession: null,
+        encounters: [...state.encounters, ...fresh],
+        meetups,
+        sessionSummary: { sessionId: s.id, groupId: s.groupId, minutes: endMin, before: action.before || null },
+      })
     }
+
+    case 'CLEAR_SESSION_SUMMARY':
+      return { ...state, sessionSummary: null }
 
     case 'ADVANCE_DAY':
       return { ...state, day: state.day + 1 }
@@ -212,7 +255,8 @@ function load() {
   try {
     const raw = localStorage.getItem(KEY)
     if (!raw) return initialState
-    const parsed = JSON.parse(raw)
+    // meetupMode belonged to the in-person mode that iteration 3 replaced.
+    const { meetupMode: _retired, ...parsed } = JSON.parse(raw)
     return {
       ...initialState,
       ...parsed,
@@ -220,6 +264,9 @@ function load() {
       profile: { ...emptyProfile, ...(parsed.profile || {}) },
       customGroups: parsed.customGroups || [],
       joinedOn: parsed.joinedOn || {},
+      tapSession: parsed.tapSession || null,
+      encounters: parsed.encounters || [],
+      sessionSummary: null,
       lastEarned: null,
       pendingBadges: [],
     }
@@ -235,8 +282,8 @@ export function StoreProvider({ children }) {
 
   useEffect(() => {
     try {
-      // Transient UI state (burst + badge queue) is deliberately not persisted.
-      const { lastEarned: _burst, pendingBadges: _queue, ...persist } = state
+      // Transient UI state (burst, badge queue, session summary) is deliberately not persisted.
+      const { lastEarned: _burst, pendingBadges: _queue, sessionSummary: _summary, ...persist } = state
       localStorage.setItem(KEY, JSON.stringify(persist))
     } catch {
       /* ignore */

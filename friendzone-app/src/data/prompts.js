@@ -589,97 +589,6 @@ export const PROMPTS = {
   ],
 }
 
-// ── In-person mode ────────────────────────────────────────────────────────
-//
-// A different job from the chat prompts. At a table with four people you cannot
-// take three minutes to compose something, so these are short, aimed at the
-// group rather than one person, and half of them are an action rather than a
-// question. That split is the project's whole thesis in miniature: giving
-// people something to do beats giving them something to say.
-//
-//   kind 'ask' — read it out, let the group answer
-//   kind 'do'  — a small action that does not require anyone to perform
-
-export const IN_PERSON = {
-  food: [
-    { kind: 'do', text: 'Whoever is nearest the stove is in charge. Everyone else, ask them what to do next.' },
-    { kind: 'ask', text: 'Go round the table. What dish would you cook to impress someone?' },
-    { kind: 'do', text: 'Swap one cooking tip with the person on your left.' },
-    { kind: 'ask', text: 'What is in this kitchen that none of us know how to use?' },
-  ],
-  screen: [
-    { kind: 'ask', text: 'Everyone name a film you would defend to the death.' },
-    { kind: 'do', text: 'Pick tonight by having each person veto one option.' },
-    { kind: 'ask', text: 'First film you remember seeing in a cinema?' },
-  ],
-  study: [
-    { kind: 'ask', text: 'What is everyone actually working on right now?' },
-    { kind: 'do', text: 'Say one thing you want to finish before you leave. Hold each other to it.' },
-    { kind: 'ask', text: 'Worst place you have ever tried to study?' },
-  ],
-  gaming: [
-    { kind: 'do', text: 'Whoever knows the rules best explains them to whoever knows them least.' },
-    { kind: 'ask', text: 'What did everyone play most as a kid?' },
-  ],
-  tabletop: [
-    { kind: 'do', text: 'Teams by whose birthday is closest to today.' },
-    { kind: 'ask', text: 'Who here is a sore loser? Be honest now, before we start.' },
-    { kind: 'do', text: 'Let whoever has played least pick the first game.' },
-  ],
-  photography: [
-    { kind: 'do', text: 'Everyone photograph the same thing. Compare after.' },
-    { kind: 'ask', text: 'Show the group the last photo you took.' },
-    { kind: 'do', text: 'Take one photo you would normally delete. Keep it.' },
-  ],
-  fitness: [
-    { kind: 'ask', text: 'How did everyone sleep? Be honest.' },
-    { kind: 'do', text: 'Pair with someone you have not run with before for the first kilometre.' },
-    { kind: 'ask', text: 'What got you started doing this?' },
-  ],
-  outdoors: [
-    { kind: 'do', text: 'Whoever has been here before goes last and tells the rest what is coming.' },
-    { kind: 'ask', text: 'What is the furthest you have walked in one go?' },
-    { kind: 'do', text: 'Stop at the next good view. Nobody takes a photo for one minute.' },
-  ],
-  coffee: [
-    { kind: 'do', text: 'Everyone order something they have never had here.' },
-    { kind: 'ask', text: 'Rate it out of ten before you hear anyone else.' },
-    { kind: 'do', text: 'Ask the person next to you what they usually order, then order that.' },
-  ],
-  music: [
-    { kind: 'do', text: 'Everyone adds one song to the queue. No skipping.' },
-    { kind: 'ask', text: 'Last live show anyone went to?' },
-  ],
-  ballsports: [
-    { kind: 'do', text: 'Pick teams by who has played least recently.' },
-    { kind: 'ask', text: 'Who taught you to play?' },
-  ],
-  wellbeing: [
-    { kind: 'ask', text: 'What is everyone hoping to shake off today?' },
-    { kind: 'do', text: 'Set your mat next to someone you have not spoken to yet.' },
-  ],
-  motorsport: [
-    { kind: 'ask', text: 'Predictions before the lights go out. Everyone says a podium.' },
-    { kind: 'do', text: 'Whoever knows least about the sport picks a driver to support today.' },
-    { kind: 'ask', text: 'Who here has actually been to a race?' },
-  ],
-  language: [
-    { kind: 'do', text: 'Everyone teach the group one word that does not translate well.' },
-    { kind: 'ask', text: 'What is a phrase you use constantly at home and never here?' },
-    { kind: 'do', text: 'Swap languages now. Whoever is least confident starts.' },
-  ],
-  general: [
-    { kind: 'ask', text: 'Go round. Your name, and one thing you did this week.' },
-    { kind: 'do', text: 'Find one thing you have in common with the person beside you. Anything counts.' },
-    { kind: 'ask', text: 'What made everyone join this circle?' },
-    { kind: 'do', text: 'Ask someone a question you would normally think is too boring to ask.' },
-    { kind: 'ask', text: 'Who has been in Brisbane longest? Who is newest?' },
-    { kind: 'ask', text: 'What is something you are bad at and completely fine about?' },
-    { kind: 'do', text: 'Swap one recommendation with the person across from you. Food, film, anything.' },
-    { kind: 'ask', text: 'What is everyone doing after this?' },
-  ],
-}
-
 // Prompts are keyed at whichever level of the interest tree they make sense at,
 // mostly the root. A circle tagged with a leaf like 'f1-ferrari' walks up its
 // path and inherits 'motorsport', so specific circles are never left without
@@ -706,10 +615,6 @@ function poolForTags(source, tags) {
     }
   }
   return out
-}
-
-export function meetupPromptsFor(tags = []) {
-  return poolForTags(IN_PERSON, tags)
 }
 
 const ALL_PROMPTS = Object.values(PROMPTS).flat()

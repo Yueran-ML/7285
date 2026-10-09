@@ -4,10 +4,11 @@
 
 FriendZone is a mobile app concept that helps newcomers to Brisbane — especially international
 students — build and *keep* social connections. It pairs small interest-based groups with
-conversation prompts, gentle daily rewards, and a bonus window after in-person meetups so that
+conversation prompts and gentle daily rewards. When a circle meets, two phones tap, a clock runs,
+and a seven-day board shows who has been showing up in person. A bonus window afterwards helps
 new connections survive the first goodbye.
 
-**Live prototype (Iteration 1):** <https://yueran-ml.github.io/7285/>
+**Live prototype:** <https://yueran-ml.github.io/7285/>
 Open it on a phone for the full-screen app, or on a laptop for the exhibition view with demo controls.
 
 Team FriendZone · DECO7285 Design Computing Studio 2 (Interaction Design) · The University of Queensland · Semester 2, 2026 · Theme: **Care**
@@ -32,26 +33,29 @@ afterwards.
 
 ## The concept
 
-Three mechanisms, designed to work together:
+The mechanisms, designed to work together:
 
 | Mechanism | What it does | Why |
 |---|---|---|
 | **Interest-based circles** | Pick what you already like; get recommended small groups (4–8 people) that share it. An optional profile adds how you like to meet people, what you enjoy, what you would rather avoid, and your star sign. | Replaces the cold approach with a curated, low-pressure entry point. Shared hobbies alone say little about whether a room will feel comfortable. |
 | **Prompted chat with daily points** | Each circle chat has built-in conversation prompts. Saying anything once a day earns one point; points unlock cosmetic badges. | Prompts give people *something to focus on* instead of something to invent. Small, daily, non-competitive rewards scaffold the first steps for people who would otherwise stay silent. |
 | **Post-meetup bonus** | When a circle meets in person, chatting in the seven days afterwards earns triple points. | Directly targets the "after everyone goes home" drop-off our research identified. |
-| **In-person mode** | At the meetup itself, one tap switches off everything except a deck of prompts written for a table. Nothing there earns points. | The hardest moment is the one the app cannot mediate. Its job there is to hand over an opening line and then get out of the way. |
+| **Tap phones in person** | At the meetup the screen becomes the table. Bring your phone to someone else's and hold it there; the tap starts a clock for the two of you. | The aim is face-to-face contact, so that is what gets recorded. A tap needs both people and cannot be done from a bedroom. |
+| **The in-person board** | The last seven days, ranked by time together or by people met, built from taps alone. | Makes showing up visible. It is the only ranked element in the app, and its limits are listed under Ethics. |
 
 The whole flow, as one user would experience it: *Jia arrives in Brisbane → picks cooking, movies
 and study → joins the Cooking Circle → answers the prompt "What's a dish from your hometown you
-miss?" → chats daily → the circle cooks dumplings together on Saturday → the bonus window keeps
-the thread alive → they plan the next one.*
+miss?" → chats daily → the circle cooks dumplings together on Saturday → they tap phones at the
+table and the clock runs → the bonus window keeps the thread alive → they plan the next one.*
 
 ## Design principles
 
 - **Scaffolded, not spontaneous.** The app never asks users to open with nothing. Prompts are
   interest-specific and can be cycled or hidden.
-- **Cumulative, non-competitive rewards.** Points never reset, there are no streaks that punish
-  a missed day, and there is no leaderboard. Badges are cosmetic.
+- **Chat rewards are cumulative and unranked.** Points never reset, there are no streaks that
+  punish a missed day, and badges are cosmetic.
+- **One ranked element.** The in-person board is the single place the app compares people, and it
+  compares only what a tap between two phones recorded.
 - **Continuity across online and offline.** The in-person meetup is a stage in the same
   relationship, not the end of the app's job.
 - **For anyone building connections.** No clinical language, no "social anxiety" labels in the
@@ -60,6 +64,10 @@ the thread alive → they plan the next one.*
 ## Ethics built into the prototype
 
 - Points are capped at one earn per circle per day; rewards are cosmetic only.
+- The in-person board lists nobody until they have a tap, so there is no last place for someone
+  who has met no one. It looks back seven days, so a newcomer is not behind people who arrived a
+  year ago. A session closes itself after four hours, and a tap credits both people.
+- A tap records who and for how long. It does not record where, and nothing tracks location.
 - Meetup suggestions are group-based (never one-to-one) in public or shared spaces.
 - No message content is analysed; participation is tracked as a yes/no per day.
 - Interest matching surfaces overlap but never filters by language or nationality.
@@ -75,7 +83,8 @@ the thread alive → they plan the next one.*
 |---|---|---|
 | **1** — Week 8 exhibit (17 Sep 2026) | Interactive prototype: onboarding, discovery, prompted chat, points, meetup flow, badges. Simulated days, local state. | ✅ Live |
 | **2** | Matching past hobbies: an optional profile (how you like to meet people, things you enjoy, things you would rather avoid, star sign) and a three-level interest tree, so Motorsport, Formula 1 and Ferrari are three different signals. 22 circles, five sort lenses, search and filters, circle creation, and an in-person mode that switches the app off at a meetup. Conversation prompts gained their own replies. | ✅ Live |
-| **3** | Language as a barrier: bilingual prompts and keyword hints for non-native speakers. Backend for shared circles across devices, real dates, evaluation-study integration. | Planned |
+| **3** — Week 13 exhibit (29 Oct 2026) | In person: tapping phones, a clock per person, and a seven-day board. The in-person prompt deck was removed after Week 8 feedback. Evaluation study with the System Usability Scale. | In progress |
+| **Next** | Language as a barrier: bilingual prompts and keyword hints for non-native speakers. A real NFC tap, a backend for shared circles across devices, real dates. | Planned |
 
 ## Repository
 

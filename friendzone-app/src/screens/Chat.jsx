@@ -56,12 +56,12 @@ function MeetupBanner({ group, state, dispatch }) {
   const left = bonusDaysLeft(state, group.id)
 
   // Available from every state after RSVP: you may be at the meetup now, or back
-  // at a later one, and leaving the mode by accident should not lock you out.
+  // at a later one, and closing the tap screen by accident should not lock you out.
   const hereButton = (tone = 'sage') => (
     <button
       className={`btn btn-sm ${tone === 'gold' ? '' : 'btn-sage'}`}
-      onClick={() => dispatch({ type: 'ENTER_MEETUP_MODE', groupId: group.id })}
-      title="Switch the app into in-person mode"
+      onClick={() => dispatch({ type: 'START_SESSION', groupId: group.id })}
+      title="Start tapping phones at this meetup"
       style={tone === 'gold' ? { background: '#5a3d00', color: '#fbf0d0' } : undefined}
     >
       I’m here

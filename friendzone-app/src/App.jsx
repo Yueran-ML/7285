@@ -11,7 +11,9 @@ import Discover from './screens/Discover.jsx'
 import Chats from './screens/Chats.jsx'
 import Chat from './screens/Chat.jsx'
 import Profile from './screens/Profile.jsx'
-import MeetupMode from './screens/MeetupMode.jsx'
+import TapSession from './screens/TapSession.jsx'
+import SessionSummary from './screens/SessionSummary.jsx'
+import Leaderboard from './screens/Leaderboard.jsx'
 import CreateCircle from './screens/CreateCircle.jsx'
 
 const slide = {
@@ -61,12 +63,12 @@ function Shell() {
     go('about', 1)
   }
 
-  const tabScreen = ['discover', 'chats', 'profile'].includes(screen)
+  const tabScreen = ['discover', 'chats', 'board', 'profile'].includes(screen)
   const notDoneToday = state.joinedGroups.filter((g) => state.checkIns[g] !== state.day).length
 
-  // At an in-person meetup the app hands the screen over entirely. No tabs, no
-  // chat, no badge popups, nothing to earn. Leaving restores the previous screen.
-  if (state.meetupMode) return <MeetupMode />
+  // At an in-person meetup the screen is handed over to tapping phones. Ending
+  // the session restores whichever screen was open before.
+  if (state.tapSession) return <TapSession />
 
   return (
     <>
@@ -110,9 +112,14 @@ function Shell() {
             <Chats onOpenChat={openChat} onDiscover={() => go('discover', -1)} />
           </motion.div>
         )}
+        {screen === 'board' && (
+          <motion.div key="board" variants={fade} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0 }}>
+            <Leaderboard onOpenCircles={() => go('chats', -1)} onDiscover={() => go('discover', -1)} />
+          </motion.div>
+        )}
         {screen === 'profile' && (
           <motion.div key="profile" variants={fade} initial="initial" animate="animate" exit="exit" style={{ position: 'absolute', inset: 0 }}>
-            <Profile narrow={narrow} onEditProfile={() => openAbout('profile')} />
+            <Profile narrow={narrow} onEditProfile={() => openAbout('profile')} onOpenBoard={() => go('board', -1)} />
           </motion.div>
         )}
         {screen === 'chat' && activeGroup && (
@@ -124,7 +131,13 @@ function Shell() {
 
       {tabScreen && <TabBar active={screen} onChange={(t) => go(t, 1)} unread={notDoneToday} />}
 
-      <BadgeUnlock badgeId={state.pendingBadges[0]} onClose={() => dispatch({ type: 'DISMISS_BADGE' })} />
+      <SessionSummary onSeeBoard={() => go('board', 1)} />
+
+      {/* A badge earned at the meetup waits until the summary has been read. */}
+      <BadgeUnlock
+        badgeId={state.sessionSummary ? null : state.pendingBadges[0]}
+        onClose={() => dispatch({ type: 'DISMISS_BADGE' })}
+      />
     </>
   )
 }
